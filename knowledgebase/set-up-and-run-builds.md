@@ -52,6 +52,23 @@ Could not determine a usable wildcard IP for this machine.
 
 Same command works when run with required escalation. This is an environment issue, not mod code failure.
 
+## New Template OP Setup
+
+New template worlds start with an empty `run/ops.json`. If you need commands in the dev server, copy the player entry from `run/usercache.json` into `run/ops.json`:
+
+```json
+[
+  {
+    "uuid": "player-uuid-from-usercache",
+    "name": "PlayerName",
+    "level": 4,
+    "bypassesPlayerLimit": false
+  }
+]
+```
+
+The local dev username has been `Dev` in this workspace. Confirm with `run/usercache.json` or `run/logs/latest.log` before assuming the UUID.
+
 ## What Not To Do
 
 - Do not run Gradle without `source ./env.sh` unless you have already verified Java 25 is active.

@@ -46,6 +46,16 @@ For future recipe additions or balancing, prefer datapacks/datagen/KubeJS when p
 - OP status does not matter. If the recipe exists, OP and non-OP can craft it.
 - Test actual crafting output slot, not only recipe book visuals.
 
+## Recipe Book Unlocks
+
+When adding or changing a player-facing recipe, consider the matching advancement under:
+
+```text
+data/<namespace>/advancement/recipes/<category>/<recipe_id>.json
+```
+
+The recipe JSON controls crafting or cooking behavior. The advancement controls when the recipe book unlocks that recipe. For vanilla recipe overrides, also override the vanilla advancement if the unlock criteria should match the new ingredients.
+
 ## What Not To Do
 
 - Do not rely on recipe book disappearance as the only test.
