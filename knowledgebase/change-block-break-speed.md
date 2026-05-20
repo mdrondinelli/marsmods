@@ -37,6 +37,12 @@ Flint breaking logs:
 - target: `BlockTags.LOGS`
 - speed cap: `0.3f`
 
+Stone axe and pickaxe nerf:
+
+- condition: main hand `Items.STONE_AXE` or `Items.STONE_PICKAXE`
+- action: multiply final event speed by `0.5f`
+- reason: buffs and debuffs still matter because the speed is scaled instead of capped
+
 ## What Not To Do
 
 - Do not scan blocks or chunks every tick to slow mining.

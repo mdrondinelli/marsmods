@@ -24,10 +24,12 @@ No custom `BlockDropsEvent` cobblestone branch is needed.
 For flint harvesting logs, use the same `HarvestCheck` event with `BlockTags.LOGS` instead of enumerating log blocks:
 
 ```java
-if (event.getTargetBlock().is(BlockTags.LOGS) && event.getEntity().getMainHandItem().is(Items.FLINT)) {
-    event.setCanHarvest(true);
+if (event.getTargetBlock().is(BlockTags.LOGS)) {
+    event.setCanHarvest(isAllowedLogHarvester(event.getEntity().getMainHandItem()));
 }
 ```
+
+Logs do not have `requiresCorrectToolForDrops()`, so `incorrect_for_wooden_tool` alone cannot stop log drops. Use `HarvestCheck` and `BlockDropsEvent` to make logs drop only for flint or non-wood axes.
 
 Use `BlockDropsEvent` for post-success flint wear on logs. `Player#getRandom().nextInt(6) == 0` gives a one-in-six break chance:
 
@@ -63,6 +65,12 @@ if (event.getState().is(Blocks.STONE)
 ```
 
 `ItemStack#consume` respects creative/infinite-materials behavior. `Player#onEquippedItemBroken` broadcasts the vanilla item break sound/particles for the equipment slot.
+
+## Incorrect Tool Tags
+
+Vanilla tool materials use block tags such as `minecraft:incorrect_for_wooden_tool` to decide when a material is not correct for drops. Adding blocks to this tag helps vanilla harvest checks and overlay mods that inspect vanilla tool correctness.
+
+This only matters when the block requires a correct tool. For logs, enforce the rule with events because logs normally drop even when the tool is not correct.
 
 ## What Not To Do
 
