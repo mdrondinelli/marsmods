@@ -4,6 +4,8 @@ import java.util.Set;
 
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -53,5 +55,11 @@ public class PrimitiveProgressionEvents {
             return;
         }
 
+        if (event.getState().is(Blocks.STONE)
+                && event.getBreaker() instanceof Player player
+                && player.getMainHandItem().is(Items.FLINT)) {
+            player.getMainHandItem().consume(1, player);
+            player.onEquippedItemBroken(Items.FLINT, EquipmentSlot.MAINHAND);
+        }
     }
 }

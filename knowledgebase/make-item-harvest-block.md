@@ -31,6 +31,19 @@ if (event.getEntity().getMainHandItem().is(Items.FLINT) && event.getState().is(B
 }
 ```
 
+Use `BlockDropsEvent` for post-success effects after the block actually breaks. For a consumable non-tool item such as flint, consume the item and trigger vanilla break feedback:
+
+```java
+if (event.getState().is(Blocks.STONE)
+        && event.getBreaker() instanceof Player player
+        && player.getMainHandItem().is(Items.FLINT)) {
+    player.getMainHandItem().consume(1, player);
+    player.onEquippedItemBroken(Items.FLINT, EquipmentSlot.MAINHAND);
+}
+```
+
+`ItemStack#consume` respects creative/infinite-materials behavior. `Player#onEquippedItemBroken` broadcasts the vanilla item break sound/particles for the equipment slot.
+
 ## What Not To Do
 
 - Do not try to fix a failed harvest path only by changing drops. If harvest fails, normal loot may never be produced.
