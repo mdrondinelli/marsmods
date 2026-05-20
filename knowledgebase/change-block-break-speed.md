@@ -31,6 +31,12 @@ Flint breaking vanilla stone:
 - target: `Blocks.STONE`
 - speed cap: `0.3f`
 
+Flint breaking logs:
+
+- condition: main hand `Items.FLINT`
+- target: `BlockTags.LOGS`
+- speed cap: `0.3f`
+
 ## What Not To Do
 
 - Do not scan blocks or chunks every tick to slow mining.

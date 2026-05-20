@@ -21,6 +21,26 @@ For flint harvesting vanilla stone, `HarvestCheck` is the important gate. After 
 
 No custom `BlockDropsEvent` cobblestone branch is needed.
 
+For flint harvesting logs, use the same `HarvestCheck` event with `BlockTags.LOGS` instead of enumerating log blocks:
+
+```java
+if (event.getTargetBlock().is(BlockTags.LOGS) && event.getEntity().getMainHandItem().is(Items.FLINT)) {
+    event.setCanHarvest(true);
+}
+```
+
+Use `BlockDropsEvent` for post-success flint wear on logs. `Player#getRandom().nextInt(6) == 0` gives a one-in-six break chance:
+
+```java
+if (event.getState().is(BlockTags.LOGS)
+        && event.getBreaker() instanceof Player player
+        && player.getMainHandItem().is(Items.FLINT)
+        && player.getRandom().nextInt(6) == 0) {
+    player.getMainHandItem().consume(1, player);
+    player.onEquippedItemBroken(Items.FLINT, EquipmentSlot.MAINHAND);
+}
+```
+
 ## Related Event
 
 Use `PlayerEvent.BreakSpeed` separately if the new harvesting item should still be slow:

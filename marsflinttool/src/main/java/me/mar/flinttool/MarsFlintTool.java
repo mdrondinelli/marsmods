@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(MarsFlintTool.MODID)
@@ -14,5 +16,8 @@ public class MarsFlintTool {
 
     public MarsFlintTool() {
         NeoForge.EVENT_BUS.register(new PrimitiveProgressionEvents());
+        if (FMLEnvironment.getDist() == Dist.CLIENT) {
+            PrimitiveProgressionClientEvents.register();
+        }
     }
 }
