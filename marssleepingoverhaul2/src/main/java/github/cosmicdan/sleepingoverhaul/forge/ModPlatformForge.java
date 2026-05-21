@@ -2,9 +2,12 @@ package github.cosmicdan.sleepingoverhaul.forge;
 
 import com.mojang.datafixers.util.Either;
 import github.cosmicdan.sleepingoverhaul.IModPlatform;
+import github.cosmicdan.sleepingoverhaul.SleepingOverhaul;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
+import net.minecraft.world.attribute.BedRule;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -26,15 +29,15 @@ public class ModPlatformForge implements IModPlatform {
 
     @Override
     public boolean canPlayerStartSleepNow(ServerPlayer serverPlayer) {
-        // Player is already in bed if they sent the packet; validate via NeoForge event
-        if (serverPlayer.getSleepingPos().isPresent()) {
-            final BlockPos bedPos = serverPlayer.getSleepingPos().get();
-            // Use success as vanilla baseline (BedRestMixinsForge handles daytime override)
-            Either<Player.BedSleepingProblem, Unit> vanillaResult = Either.right(Unit.INSTANCE);
-            Either<Player.BedSleepingProblem, Unit> result = EventHooks.canPlayerStartSleeping(serverPlayer, bedPos, vanillaResult);
-            return result.right().isPresent();
-        }
-        return false;
+        if (!serverPlayer.getSleepingPos().isPresent()) return false;
+        final BlockPos bedPos = serverPlayer.getSleepingPos().get();
+        BedRule rule = serverPlayer.level().environmentAttributes().getValue(EnvironmentAttributes.BED_RULE, bedPos);
+        boolean canSleep = rule.canSleep(serverPlayer.level())
+            || SleepingOverhaul.serverConfig.featureAllowAnyDimension.get();
+        Either<Player.BedSleepingProblem, Unit> vanillaResult = canSleep
+            ? Either.right(Unit.INSTANCE)
+            : Either.left(rule.asProblem());
+        return EventHooks.canPlayerStartSleeping(serverPlayer, bedPos, vanillaResult).right().isPresent();
     }
 
     @Override
