@@ -5,7 +5,6 @@ import github.cosmicdan.sleepingoverhaul.server.ServerConfig;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
@@ -75,27 +74,16 @@ abstract class TimelapseMixinsCommonServerLevel extends Level {
     public abstract ServerLevel getLevel();
 
     /**
-     * For feature to prevent spawns during timelapse
+     * For feature to prevent spawns during timelapse.
+     * MC 26.x: isNaturalSpawningAllowed(ChunkPos) → canSpawnEntitiesInChunk(ChunkPos);
+     * the BlockPos overload was removed.
      */
     @Inject(
-            method = "isNaturalSpawningAllowed(Lnet/minecraft/core/BlockPos;)Z",
+            method = "canSpawnEntitiesInChunk(Lnet/minecraft/world/level/ChunkPos;)Z",
             at = @At("HEAD"),
             cancellable = true
     )
-    public final void onNaturalSpawnCheckBlockPos(final BlockPos blockPos, final CallbackInfoReturnable<Boolean> cir) {
-        if (SleepingOverhaul.serverState.shouldPreventNaturalSpawning())
-            cir.setReturnValue(false);
-    }
-
-    /**
-     * For feature to prevent spawns during timelapse
-     */
-    @Inject(
-            method = "isNaturalSpawningAllowed(Lnet/minecraft/world/level/ChunkPos;)Z",
-            at = @At("HEAD"),
-            cancellable = true
-    )
-    public final void onNaturalSpawnCheckChunk(ChunkPos chunkPoss, final CallbackInfoReturnable<Boolean> cir) {
+    public final void onNaturalSpawnCheckChunk(ChunkPos chunkPos, final CallbackInfoReturnable<Boolean> cir) {
         if (SleepingOverhaul.serverState.shouldPreventNaturalSpawning())
             cir.setReturnValue(false);
     }
