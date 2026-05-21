@@ -11,6 +11,14 @@
     "tag": "marsfoodspoilage:does_not_spoil"
   },
   {
+    "tag": "c:foods/fruit",
+    "profile": {
+      "shelf_life_ticks": 72000,
+      "stale_threshold_ticks": 24000,
+      "cancel_spoiled_consumption": true
+    }
+  },
+  {
     "tag": "c:foods",
     "profile": {
       "shelf_life_ticks": 24000,
