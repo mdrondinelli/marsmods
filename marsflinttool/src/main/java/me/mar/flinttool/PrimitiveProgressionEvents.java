@@ -5,22 +5,16 @@ import java.util.Set;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.ModifyRecipeJsonsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 
 public class PrimitiveProgressionEvents {
-    private static final float HAND_LOG_BREAK_SPEED = 0.05f;
-    private static final float FLINT_LOG_BREAK_SPEED = 0.3f;
-    private static final float FLINT_STONE_BREAK_SPEED = 0.3f;
+    private static final float HAND_PRIMITIVE_BLOCK_BREAK_SPEED = 0.05f;
     private static final float STONE_TOOL_SPEED_MULTIPLIER = 0.5f;
-    private static final int FLINT_LOG_BREAK_CHANCE = 6;
     private static final Set<Identifier> REMOVED_RECIPES = Set.of(
             Identifier.withDefaultNamespace("wooden_axe"),
             Identifier.withDefaultNamespace("wooden_hoe"),
@@ -36,16 +30,9 @@ public class PrimitiveProgressionEvents {
 
     @SubscribeEvent
     public void slowHandLogBreaking(PlayerEvent.BreakSpeed event) {
-        if (event.getEntity().getMainHandItem().isEmpty() && event.getState().is(BlockTags.LOGS)) {
-            event.setNewSpeed(Math.min(event.getNewSpeed(), HAND_LOG_BREAK_SPEED));
-        }
-
-        if (event.getEntity().getMainHandItem().is(Items.FLINT) && event.getState().is(BlockTags.LOGS)) {
-            event.setNewSpeed(Math.min(event.getNewSpeed(), FLINT_LOG_BREAK_SPEED));
-        }
-
-        if (event.getEntity().getMainHandItem().is(Items.FLINT) && event.getState().is(Blocks.STONE)) {
-            event.setNewSpeed(Math.min(event.getNewSpeed(), FLINT_STONE_BREAK_SPEED));
+        if (event.getEntity().getMainHandItem().isEmpty()
+                && (event.getState().is(BlockTags.LOGS) || event.getState().requiresCorrectToolForDrops())) {
+            event.setNewSpeed(Math.min(event.getNewSpeed(), HAND_PRIMITIVE_BLOCK_BREAK_SPEED));
         }
 
         if ((event.getEntity().getMainHandItem().is(Items.STONE_AXE)
@@ -68,10 +55,6 @@ public class PrimitiveProgressionEvents {
             event.setCanHarvest(false);
             return;
         }
-
-        if (event.getTargetBlock().is(Blocks.STONE) && heldItem.is(Items.FLINT)) {
-            event.setCanHarvest(true);
-        }
     }
 
     @SubscribeEvent
@@ -81,24 +64,9 @@ public class PrimitiveProgressionEvents {
             event.setDroppedExperience(0);
             return;
         }
-
-        if (event.getState().is(BlockTags.LOGS)
-                && event.getBreaker() instanceof Player player
-                && player.getMainHandItem().is(Items.FLINT)
-                && player.getRandom().nextInt(FLINT_LOG_BREAK_CHANCE) == 0) {
-            player.getMainHandItem().consume(1, player);
-            player.onEquippedItemBroken(Items.FLINT, EquipmentSlot.MAINHAND);
-        }
-
-        if (event.getState().is(Blocks.STONE)
-                && event.getBreaker() instanceof Player player
-                && player.getMainHandItem().is(Items.FLINT)) {
-            player.getMainHandItem().consume(1, player);
-            player.onEquippedItemBroken(Items.FLINT, EquipmentSlot.MAINHAND);
-        }
     }
 
     private static boolean isAllowedLogHarvester(ItemStack stack) {
-        return stack.is(Items.FLINT) || (stack.is(ItemTags.AXES) && !stack.is(Items.WOODEN_AXE));
+        return stack.is(ModItems.FLINT_TOOL) || (stack.is(ItemTags.AXES) && !stack.is(Items.WOODEN_AXE));
     }
 }
