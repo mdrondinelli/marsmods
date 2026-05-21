@@ -55,6 +55,10 @@ abstract class BedRestMixinsForgePlayer {
         if (sleeper instanceof Player player && SleepingOverhaul.serverConfig.bedRestEnabled.get()) {
             if (!((PlayerMixinProxy) player).so2_$isReallySleeping())
                 return true;
+            if (SleepingOverhaul.serverConfig.bedRestAllowDaytime.get()
+                    && problem == Player.BedSleepingProblem.OTHER_PROBLEM) {
+                return original.call(sleeper, null);
+            }
         }
         return original.call(sleeper, problem);
     }

@@ -33,7 +33,8 @@ public class ModPlatformForge implements IModPlatform {
         final BlockPos bedPos = serverPlayer.getSleepingPos().get();
         BedRule rule = serverPlayer.level().environmentAttributes().getValue(EnvironmentAttributes.BED_RULE, bedPos);
         boolean canSleep = rule.canSleep(serverPlayer.level())
-            || SleepingOverhaul.serverConfig.featureAllowAnyDimension.get();
+            || SleepingOverhaul.serverConfig.featureAllowAnyDimension.get()
+            || SleepingOverhaul.serverConfig.bedRestAllowDaytime.get();
         Either<Player.BedSleepingProblem, Unit> vanillaResult = canSleep
             ? Either.right(Unit.INSTANCE)
             : Either.left(rule.asProblem());
