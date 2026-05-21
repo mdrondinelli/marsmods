@@ -39,8 +39,8 @@ configurations {
 }
 
 dependencies {
-    compileOnly files("../marssleepingoverhaul2/build/libs/sleepingoverhaul-2.1.1.jar")
-    compileOnly files("/home/marlon/minecraft-server/mods/DistantHorizons-3.0.3-b-26.1.2-fabric-neoforge.jar")
+    compileOnly files("../marssleepingoverhaul/build/libs/sleepingoverhaul-2.1.1.jar")
+    compileOnly files("../external/DistantHorizons-3.0.3-b-26.1.2-fabric-neoforge.jar")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

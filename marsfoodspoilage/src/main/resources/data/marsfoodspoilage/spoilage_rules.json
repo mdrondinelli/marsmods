@@ -1,0 +1,21 @@
+[
+  {
+    "tag": "c:foods/raw_meat",
+    "profile": {
+      "shelf_life_ticks": 600,
+      "stale_threshold_ticks": 200,
+      "cancel_spoiled_consumption": true
+    }
+  },
+  {
+    "tag": "marsfoodspoilage:does_not_spoil"
+  },
+  {
+    "tag": "c:foods",
+    "profile": {
+      "shelf_life_ticks": 24000,
+      "stale_threshold_ticks": 8000,
+      "cancel_spoiled_consumption": true
+    }
+  }
+]

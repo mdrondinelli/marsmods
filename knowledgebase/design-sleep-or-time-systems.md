@@ -70,4 +70,4 @@ Returning false kicks the player out of bed. Intercept `OTHER_PROBLEM` at this c
 
 To distinguish "resting in bed" from "actually pressed Sleep" in multiplayer, add a per-player `reallySleeping` boolean via Mixin on `Player`. Override `SleepStatus.update()` to substitute `reallySleeping` for `isSleeping()` — otherwise bed-resting players count toward `playersSleepingPercentage` and trigger the sleep threshold unintentionally.
 
-See `marssleepingoverhaul2` `BedRestMixinsCommon.java` for a working implementation.
+See `marssleepingoverhaul` `BedRestMixinsCommon.java` for a working implementation.
