@@ -2,7 +2,6 @@ package github.cosmicdan.sleepingoverhaul.mixin.injection;
 
 import github.cosmicdan.sleepingoverhaul.SleepingOverhaul;
 import github.cosmicdan.sleepingoverhaul.mixin.proxy.ChatScreenProxy;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.gui.ComponentPath;
@@ -89,11 +88,10 @@ abstract class FeaturesMixinsCommonClientInBedChatScreen extends ChatScreen {
      * - Only sends the message if chat box is actually focused;
      * - Enables Ctrl+Tab to switch focus to/from the chat box;
      * - Enables ENTER to actually work on buttons (if chat box is NOT focused)
+     * MC 26.x: InBedChatScreen no longer overrides keyPressed, so we inject the override
+     * directly (unannotated method injection) instead of @WrapMethod.
      */
-    @WrapMethod(
-            method = "keyPressed"
-    )
-    private boolean onKeyPressed(KeyEvent event, Operation<Boolean> original) {
+    public boolean keyPressed(KeyEvent event) {
         if (SleepingOverhaul.clientConfig.inBedChatFixes.get()) {
             int keyCode = event.key();
             int modifiers = event.modifiers();
@@ -110,8 +108,6 @@ abstract class FeaturesMixinsCommonClientInBedChatScreen extends ChatScreen {
                     return true;
                 } else if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
                     this.handleChatInput(this.input.getValue(), true);
-                    if (input.getValue().isEmpty() && SleepingOverhaul.clientConfig.bedRestOnEnter.get())
-                        SleepingOverhaul.clientState.onClickSleep();
                     this.minecraft.setScreen(null);
                     this.input.setValue("");
                     this.minecraft.gui.getChat().resetChatScroll();
@@ -126,14 +122,7 @@ abstract class FeaturesMixinsCommonClientInBedChatScreen extends ChatScreen {
             }
             return super.keyPressed(event);
         } else {
-            // inBedChatFixes disabled: still support sleep-on-enter when input is empty
-            // MC 26.x: InBedChatScreen no longer overrides keyPressed, so we handle it here
-            if (SleepingOverhaul.serverConfig.bedRestEnabled.get() && SleepingOverhaul.clientConfig.bedRestOnEnter.get()) {
-                int keyCode = event.key();
-                if ((keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) && input.getValue().isEmpty())
-                    SleepingOverhaul.clientState.onClickSleep();
-            }
-            return original.call(event);
+            return super.keyPressed(event);
         }
     }
 }
