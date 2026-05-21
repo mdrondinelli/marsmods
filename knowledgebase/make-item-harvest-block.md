@@ -72,6 +72,10 @@ Vanilla tool materials use block tags such as `minecraft:incorrect_for_wooden_to
 
 This only matters when the block requires a correct tool. For logs, enforce the rule with events because logs normally drop even when the tool is not correct.
 
+## Actual Multi-Role Tools
+
+In Minecraft/NeoForge `26.1.2`, `ToolMaterial#applyToolProperties` takes one efficient block tag. For an item that should behave like two vanilla tool classes, such as an axe plus a pickaxe, either define a custom tool component directly or override `Item#getDestroySpeed` and `Item#isCorrectToolForDrops` for the second role. Extending `AxeItem` keeps axe right-click actions such as stripping available.
+
 ## What Not To Do
 
 - Do not try to fix a failed harvest path only by changing drops. If harvest fails, normal loot may never be produced.
