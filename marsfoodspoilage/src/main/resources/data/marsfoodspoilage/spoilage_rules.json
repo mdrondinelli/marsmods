@@ -2,8 +2,8 @@
   {
     "tag": "c:foods/raw_meat",
     "profile": {
-      "shelf_life_ticks": 600,
-      "stale_threshold_ticks": 200,
+      "shelf_life_ticks": 6000,
+      "stale_threshold_ticks": 2000,
       "cancel_spoiled_consumption": true
     }
   },
