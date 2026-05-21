@@ -41,10 +41,11 @@ abstract class TimelapseMixinsCommonMinecraftServer {
 
     /**
      * Under Timelapse, tick server as many times as possible.
+     * MC 26.x: runServer() no longer calls tickServer() directly; goes via processPacketsAndTick().
      */
     @WrapOperation(
-            method = "runServer()V",
-            at = @At(value = "INVOKE", target = "net/minecraft/server/MinecraftServer.tickServer (Ljava/util/function/BooleanSupplier;)V"),
+            method = "processPacketsAndTick(Z)V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;tickServer(Ljava/util/function/BooleanSupplier;)V"),
             require = 1, allow = 1
     )
     public final void onCallTickServer(MinecraftServer self, BooleanSupplier haveTimeSupplier, Operation<Void> original) {
