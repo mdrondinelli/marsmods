@@ -1,0 +1,9 @@
+{
+  "config.sleepingoverhaul.sleepAction": "L'action est à effectuer lorsque tous les joueurs dorment",
+  
+  "gui.sleepingoverhaul.sleepButton": "Dormir",
+  "gui.sleepingoverhaul.sleepNotPossibleNow": "Vous ne pouvez pas dormir ici pour le moment",
+  
+  "death.attack.sleepingoverhaul2.timelapseKill": "%1$s est mort dans son sommeil",
+  "death.attack.sleepingoverhaul2.timelapseKill.player": "%1$s a été tué dans son sommeil par %2$s"
+}

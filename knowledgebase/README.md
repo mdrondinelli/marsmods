@@ -24,6 +24,7 @@ Task-oriented notes from this NeoForge project. Use this as a directory: find th
 - [Use tags instead of hardcoded lists](use-tags-instead-of-hardcoded-lists.md)
 - [Use mixins only when hooks fail](use-mixins-only-when-hooks-fail.md)
 - [Design sleep or time systems](design-sleep-or-time-systems.md)
+- [Port an Architectury mod to NeoForge-only](port-architectury-mod-to-neoforge.md)
 - [Disable vanilla tutorial hints](disable-vanilla-tutorial-hints.md)
 
 ## Add Future Knowledge

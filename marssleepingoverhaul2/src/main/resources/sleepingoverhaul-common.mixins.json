@@ -1,0 +1,36 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "github.cosmicdan.sleepingoverhaul.mixin.injection",
+  "compatibilityLevel": "JAVA_25",
+  "plugin" : "github.cosmicdan.sleepingoverhaul.mixin.MixinPluginCommon",
+  "mixins": [
+    "BedEffectsCommonPoisonMobEffect",
+    "BedEffectsCommonHungerMobEffect",
+    "BedEffectsCommonWitherMobEffect",
+    "BedRestMixinsCommonPlayer",
+    "BedRestMixinsCommonSleepStatus",
+    "CoreMixinsCommonServerLevel",
+    "FeaturesMixinsCommonBedBlock",
+    "FeaturesMixinsCommonServerPlayer",
+    "TimelapseMixinsCommonLivingEntity",
+    "TimelapseMixinsCommonMinecraftServer",
+    "TimelapseMixinsCommonPlayer",
+    "TimelapseMixinsCommonServerGamePacketListenerImpl",
+    "TimelapseMixinsCommonServerLevel"
+  ],
+  "client": [
+    "BedRestMixinsCommonClientInBedChatScreen",
+    "FeaturesMixinsCommonClientChatScreen",
+    "FeaturesMixinsCommonClientInBedChatScreen",
+    "FeaturesMixinsCommonClientScreen",
+    "TimelapseMixinsCommonClientCamera",
+    "TimelapseMixinsCommonClientGui",
+    "TimelapseMixinsCommonClientLocalPlayer"
+  ],
+  "server":[
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
