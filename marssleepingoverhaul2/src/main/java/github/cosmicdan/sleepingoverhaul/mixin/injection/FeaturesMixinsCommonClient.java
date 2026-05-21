@@ -125,8 +125,16 @@ abstract class FeaturesMixinsCommonClientInBedChatScreen extends ChatScreen {
                 }
             }
             return super.keyPressed(event);
-        } else
+        } else {
+            // inBedChatFixes disabled: still support sleep-on-enter when input is empty
+            // MC 26.x: InBedChatScreen no longer overrides keyPressed, so we handle it here
+            if (SleepingOverhaul.serverConfig.bedRestEnabled.get() && SleepingOverhaul.clientConfig.bedRestOnEnter.get()) {
+                int keyCode = event.key();
+                if ((keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) && input.getValue().isEmpty())
+                    SleepingOverhaul.clientState.onClickSleep();
+            }
             return original.call(event);
+        }
     }
 }
 

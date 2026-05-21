@@ -10,8 +10,6 @@ import net.minecraft.client.gui.screens.InBedChatScreen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 class BedRestMixinsCommonClient {}
 
@@ -19,24 +17,6 @@ class BedRestMixinsCommonClient {}
 abstract class BedRestMixinsCommonClientInBedChatScreen extends ChatScreen {
     protected BedRestMixinsCommonClientInBedChatScreen(final String string, final boolean isDraft) {
         super(string, isDraft);
-    }
-
-    /**
-     * Support for requesting Sleep by pressing ENTER when there is no chat input
-     */
-    @Inject(
-            method = "keyPressed(III)Z",
-            at = @At(value = "INVOKE", target = "net/minecraft/client/gui/components/EditBox.setValue (Ljava/lang/String;)V"),
-            require = 1, allow = 1
-    )
-    public final void onClearChatEntry(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
-        if (SleepingOverhaul.serverConfig.bedRestEnabled.get() && SleepingOverhaul.clientConfig.bedRestOnEnter.get()) {
-            if (input.getValue().isEmpty()) {
-                // try to sleep if ENTER was pressed and there was no input at all (not just whitespace)
-                // Note that this only works if inBedChatFixesTxt is FALSE, otherwise we do it ourselves in FeaturesMixinsCommonClientInBedChatScreen
-                SleepingOverhaul.clientState.onClickSleep();
-            }
-        }
     }
 
     /**
