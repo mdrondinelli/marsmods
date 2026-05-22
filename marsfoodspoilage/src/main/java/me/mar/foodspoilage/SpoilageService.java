@@ -39,9 +39,6 @@ public final class SpoilageService {
             return null;
         }
         double factor = 1.0 / MarsSpoilageConfig.TIMESPEED.get();
-        if (factor == 1.0) {
-            return profile;
-        }
         return new SpoilageProfile(
                 Math.round(profile.shelfLifeTicks() * factor),
                 Math.round(profile.staleThresholdTicks() * factor),
@@ -76,7 +73,7 @@ public final class SpoilageService {
             return false;
         }
 
-        List<ItemStack> items = new ArrayList<>(contents.allItemsCopyStream().toList());
+        List<ItemStack> items = contents.allItemsCopyStream().toList();
         boolean changed = false;
         for (ItemStack contained : items) {
             changed |= touchStack(level, contained);
