@@ -23,12 +23,11 @@ public final class SpoilageService {
     }
 
     public static SpoilageState getState(ItemStack stack, long currentTick) {
-        SpoilageProfile profile = profileFor(stack);
         FreshnessData data = stack.get(ModDataComponents.FRESHNESS.get());
-        if (profile == null || data == null) {
+        if (data == null) {
             return SpoilageState.FRESH;
         }
-        return data.updatedTo(currentTick).state(profile);
+        return data.updatedTo(currentTick).state();
     }
 
     public static SpoilageProfile profileFor(ItemStack stack) {
@@ -58,7 +57,7 @@ public final class SpoilageService {
         long now = level.getGameTime();
         FreshnessData existing = stack.get(ModDataComponents.FRESHNESS.get());
         if (existing == null) {
-            FreshnessData updated = new FreshnessData(now, profile.shelfLifeTicks(), profile.shelfLifeTicks());
+            FreshnessData updated = new FreshnessData(now, profile.shelfLifeTicks(), profile.shelfLifeTicks(), profile.staleThresholdTicks());
             stack.set(ModDataComponents.FRESHNESS.get(), updated);
             return true;
         }

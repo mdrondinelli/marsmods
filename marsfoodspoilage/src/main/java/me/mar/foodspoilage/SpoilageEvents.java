@@ -1,5 +1,6 @@
 package me.mar.foodspoilage;
 
+import me.mar.foodspoilage.FreshnessData;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -105,12 +106,13 @@ public class SpoilageEvents {
     @SubscribeEvent
     public void addFreshnessTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
-        if (SpoilageService.profileFor(stack) == null) {
+        FreshnessData data = stack.get(ModDataComponents.FRESHNESS.get());
+        if (data == null) {
             return;
         }
 
         long gameTime = event.getEntity() == null ? 0 : event.getEntity().level().getGameTime();
-        SpoilageState state = SpoilageService.getState(stack, gameTime);
+        SpoilageState state = data.updatedTo(gameTime).state();
         event.getToolTip().add(Component.translatable("tooltip.marsfoodspoilage.freshness." + state.name().toLowerCase()));
     }
 
