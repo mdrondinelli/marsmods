@@ -38,13 +38,13 @@ public final class SpoilageService {
         if (profile == null) {
             return null;
         }
-        double multiplier = MarsSpoilageConfig.SHELF_LIFE_MULTIPLIER.get();
-        if (multiplier == 1.0) {
+        double factor = 1.0 / MarsSpoilageConfig.TIMESPEED.get();
+        if (factor == 1.0) {
             return profile;
         }
         return new SpoilageProfile(
-                Math.round(profile.shelfLifeTicks() * multiplier),
-                Math.round(profile.staleThresholdTicks() * multiplier),
+                Math.round(profile.shelfLifeTicks() * factor),
+                Math.round(profile.staleThresholdTicks() * factor),
                 profile.cancelSpoiledConsumption());
     }
 

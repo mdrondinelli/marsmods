@@ -112,10 +112,29 @@ public class SpoilageEvents {
         }
 
         long gameTime = event.getEntity() == null ? 0 : event.getEntity().level().getGameTime();
-        SpoilageState state = data.updatedTo(gameTime).state();
+        FreshnessData updated = data.updatedTo(gameTime);
+        SpoilageState state = updated.state();
+
         Component suffix = Component.translatable("tooltip.marsfoodspoilage.freshness." + state.name().toLowerCase());
         Component name = event.getToolTip().get(0);
         event.getToolTip().set(0, Component.empty().append(name).append(" (").append(suffix).append(")"));
+
+        if (state != SpoilageState.SPOILED) {
+            double ticksPerHour = 1000.0 / MarsSpoilageConfig.TIMESPEED.get();
+            long hours = Math.max(1, Math.round(updated.remainingFreshTicks() / ticksPerHour));
+            Component timeLine;
+            if (hours < 24) {
+                timeLine = hours == 1
+                        ? Component.translatable("tooltip.marsfoodspoilage.spoils_in_hour")
+                        : Component.translatable("tooltip.marsfoodspoilage.spoils_in_hours", hours);
+            } else {
+                long days = hours / 24;
+                timeLine = days == 1
+                        ? Component.translatable("tooltip.marsfoodspoilage.spoils_in_day")
+                        : Component.translatable("tooltip.marsfoodspoilage.spoils_in_days", days);
+            }
+            event.getToolTip().add(timeLine);
+        }
     }
 
     private static void touchInventory(ServerLevel level, Inventory inventory) {

@@ -2,5 +2,9 @@
   "message.marsfoodspoilage.spoiled_food": "This food is spoiled.",
   "tooltip.marsfoodspoilage.freshness.fresh": "Fresh",
   "tooltip.marsfoodspoilage.freshness.stale": "Stale",
-  "tooltip.marsfoodspoilage.freshness.spoiled": "Spoiled"
+  "tooltip.marsfoodspoilage.freshness.spoiled": "Spoiled",
+  "tooltip.marsfoodspoilage.spoils_in_hour": "Spoils in 1 hour",
+  "tooltip.marsfoodspoilage.spoils_in_hours": "Spoils in %s hours",
+  "tooltip.marsfoodspoilage.spoils_in_day": "Spoils in 1 day",
+  "tooltip.marsfoodspoilage.spoils_in_days": "Spoils in %s days"
 }
