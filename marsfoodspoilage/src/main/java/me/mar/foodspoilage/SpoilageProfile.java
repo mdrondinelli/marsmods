@@ -3,12 +3,10 @@ package me.mar.foodspoilage;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public record SpoilageProfile(long shelfLifeTicks, long staleThresholdTicks, boolean cancelSpoiledConsumption) {
+public record SpoilageProfile(long shelfLifeTicks, long staleThresholdTicks) {
     public static final Codec<SpoilageProfile> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.LONG.fieldOf("shelf_life_ticks").forGetter(SpoilageProfile::shelfLifeTicks),
-            Codec.LONG.fieldOf("stale_threshold_ticks").forGetter(SpoilageProfile::staleThresholdTicks),
-            Codec.BOOL.optionalFieldOf("cancel_spoiled_consumption", true)
-                    .forGetter(SpoilageProfile::cancelSpoiledConsumption))
+            Codec.LONG.fieldOf("stale_threshold_ticks").forGetter(SpoilageProfile::staleThresholdTicks))
             .apply(instance, SpoilageProfile::new));
 
     public SpoilageProfile {

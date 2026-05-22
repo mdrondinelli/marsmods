@@ -2,6 +2,9 @@ package me.mar.foodspoilage;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -22,6 +25,11 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class SpoilageEvents {
     private static final int TOUCH_INTERVAL_TICKS = 20;
+    private static final int POISON_DURATION_TICKS = 15 * 20;
+    private static final int NAUSEA_DURATION_TICKS = 10 * 20;
+    private static final int WEAKNESS_DURATION_TICKS = 30 * 20;
+    private static final int SLOWNESS_DURATION_TICKS = 20 * 20;
+    private static final int HUNGER_DURATION_TICKS = 30 * 20;
 
     public void makeFoodUnstackable(ModifyDefaultComponentsEvent event) {
         event.modifyMatching(
@@ -89,16 +97,36 @@ public class SpoilageEvents {
         ItemStack stack = event.getItem();
         SpoilageService.touchStack(level, stack);
         SpoilageProfile profile = SpoilageService.profileFor(stack);
-        if (profile == null || !profile.cancelSpoiledConsumption()) {
+        if (profile == null) {
             return;
         }
 
-        if (SpoilageService.getState(stack, level.getGameTime()) == SpoilageState.SPOILED) {
-            event.setCanceled(true);
-            if (event.getEntity() instanceof ServerPlayer player) {
-                player.sendSystemMessage(Component.translatable("message.marsfoodspoilage.spoiled_food"));
-            }
+        SpoilageState state = SpoilageService.getState(stack, level.getGameTime());
+        if (state == SpoilageState.STALE && stack.has(DataComponents.FOOD) && event.getDuration() > 0) {
+            event.setDuration(multipliedDuration(event.getDuration(), MarsSpoilageConfig.STALE_EAT_DURATION_MULTIPLIER.get()));
+        } else if (state == SpoilageState.SPOILED && stack.has(DataComponents.FOOD) && event.getDuration() > 0) {
+            event.setDuration(multipliedDuration(event.getDuration(), MarsSpoilageConfig.SPOILED_EAT_DURATION_MULTIPLIER.get()));
         }
+    }
+
+    @SubscribeEvent
+    public void applySpoiledFoodEffects(LivingEntityUseItemEvent.Finish event) {
+        if (!(event.getEntity().level() instanceof ServerLevel level)) {
+            return;
+        }
+
+        ItemStack stack = event.getItem();
+        if (!stack.has(DataComponents.FOOD) || SpoilageService.profileFor(stack) == null
+                || SpoilageService.getState(stack, level.getGameTime()) != SpoilageState.SPOILED) {
+            return;
+        }
+
+        SpoiledFoodEffects effects = SpoilageRulesLoader.INSTANCE.spoiledEffectsFor(stack);
+        if (effects == null) {
+            return;
+        }
+
+        applySpoiledFoodEffects(event.getEntity(), effects);
     }
 
     @SubscribeEvent
@@ -150,5 +178,33 @@ public class SpoilageEvents {
             }
         }
         menu.broadcastChanges();
+    }
+
+    private static int multipliedDuration(int duration, double multiplier) {
+        double multiplied = Math.ceil(duration * multiplier);
+        int clamped = (int) Math.min(Integer.MAX_VALUE, multiplied);
+        return Math.max(duration, clamped);
+    }
+
+    private static void applySpoiledFoodEffects(LivingEntity entity, SpoiledFoodEffects effects) {
+        if (roll(entity, effects.poisonChance())) {
+            entity.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_DURATION_TICKS, 0));
+        }
+        if (roll(entity, effects.nauseaChance())) {
+            entity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, NAUSEA_DURATION_TICKS, 0));
+        }
+        if (roll(entity, effects.weaknessChance())) {
+            entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, WEAKNESS_DURATION_TICKS, 0));
+        }
+        if (roll(entity, effects.slownessChance())) {
+            entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, SLOWNESS_DURATION_TICKS, 0));
+        }
+        if (roll(entity, effects.hungerChance())) {
+            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, HUNGER_DURATION_TICKS, 0));
+        }
+    }
+
+    private static boolean roll(LivingEntity entity, double chance) {
+        return chance > 0.0 && entity.getRandom().nextDouble() < chance;
     }
 }

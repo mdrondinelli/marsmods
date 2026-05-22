@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemContainerContents;
 
 public final class SpoilageService {
+    private static final TagKey<Item> DOES_NOT_SPOIL = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(MarsFoodSpoilage.MODID, "does_not_spoil"));
+
     private SpoilageService() {
     }
 
@@ -31,7 +39,7 @@ public final class SpoilageService {
     }
 
     public static SpoilageProfile profileFor(ItemStack stack) {
-        if (stack.isEmpty()) {
+        if (stack.isEmpty() || stack.is(DOES_NOT_SPOIL)) {
             return null;
         }
         SpoilageProfile profile = SpoilageRulesLoader.INSTANCE.profileFor(stack);
@@ -41,8 +49,7 @@ public final class SpoilageService {
         double factor = 1.0 / MarsSpoilageConfig.TIMESPEED.get();
         return new SpoilageProfile(
                 Math.round(profile.shelfLifeTicks() * factor),
-                Math.round(profile.staleThresholdTicks() * factor),
-                profile.cancelSpoiledConsumption());
+                Math.round(profile.staleThresholdTicks() * factor));
     }
 
     private static boolean touchOwnFreshness(ServerLevel level, ItemStack stack) {

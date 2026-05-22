@@ -1,0 +1,86 @@
+{
+  "spoilage": [
+    {
+      "tag": "c:foods/raw_meat",
+      "profile": {
+        "shelf_life_ticks": 6000,
+        "stale_threshold_ticks": 3000
+      }
+    },
+    {
+      "tag": "c:foods/raw_fish",
+      "profile": {
+        "shelf_life_ticks": 6000,
+        "stale_threshold_ticks": 3000
+      }
+    },
+    {
+      "tag": "c:foods/cooked_meat",
+      "profile": {
+        "shelf_life_ticks": 24000,
+        "stale_threshold_ticks": 12000
+      }
+    },
+    {
+      "tag": "c:foods/cooked_fish",
+      "profile": {
+        "shelf_life_ticks": 24000,
+        "stale_threshold_ticks": 12000
+      }
+    },
+    {
+      "tag": "c:foods/fruit",
+      "profile": {
+        "shelf_life_ticks": 168000,
+        "stale_threshold_ticks": 48000
+      }
+    },
+    {
+      "tag": "c:foods/berry",
+      "profile": {
+        "shelf_life_ticks": 168000,
+        "stale_threshold_ticks": 48000
+      }
+    },
+    {
+      "tag": "c:foods/vegetable",
+      "profile": {
+        "shelf_life_ticks": 336000,
+        "stale_threshold_ticks": 48000
+      }
+    },
+    {
+      "tag": "c:foods/bread",
+      "profile": {
+        "shelf_life_ticks": 72000,
+        "stale_threshold_ticks": 6000
+      }
+    },
+    {
+      "tag": "c:foods/soup",
+      "profile": {
+        "shelf_life_ticks": 6000,
+        "stale_threshold_ticks": 3000
+      }
+    },
+    {
+      "tag": "c:foods",
+      "profile": {
+        "shelf_life_ticks": 10000,
+        "stale_threshold_ticks": 6000
+      }
+    }
+  ],
+  "spoiled_effects": [
+    {
+      "tag": "c:foods",
+      "effects": {
+        "poison_chance": 0.35,
+        "nausea_chance": 0.45,
+        "weakness_chance": 0.3,
+        "slowness_chance": 0.3,
+        "hunger_chance": 0.5
+      }
+    }
+  ]
+}
