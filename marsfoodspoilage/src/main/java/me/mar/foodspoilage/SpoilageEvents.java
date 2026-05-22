@@ -113,7 +113,9 @@ public class SpoilageEvents {
 
         long gameTime = event.getEntity() == null ? 0 : event.getEntity().level().getGameTime();
         SpoilageState state = data.updatedTo(gameTime).state();
-        event.getToolTip().add(Component.translatable("tooltip.marsfoodspoilage.freshness." + state.name().toLowerCase()));
+        Component suffix = Component.translatable("tooltip.marsfoodspoilage.freshness." + state.name().toLowerCase());
+        Component name = event.getToolTip().get(0);
+        event.getToolTip().set(0, Component.empty().append(name).append(" (").append(suffix).append(")"));
     }
 
     private static void touchInventory(ServerLevel level, Inventory inventory) {
