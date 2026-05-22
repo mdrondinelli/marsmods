@@ -8,6 +8,8 @@ import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
@@ -17,7 +19,8 @@ public class MarsFoodSpoilage {
     public static final String MODID = "marsfoodspoilage";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public MarsFoodSpoilage(IEventBus modBus) {
+    public MarsFoodSpoilage(IEventBus modBus, ModContainer modContainer) {
+        modContainer.registerConfig(ModConfig.Type.COMMON, MarsSpoilageConfig.SPEC);
         ModDataComponents.register(modBus);
         SpoilageEvents events = new SpoilageEvents();
         modBus.addListener(EventPriority.LOWEST, ModifyDefaultComponentsEvent.class, events::makeFoodUnstackable);

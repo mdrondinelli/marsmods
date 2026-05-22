@@ -35,7 +35,18 @@ public final class SpoilageService {
         if (stack.isEmpty()) {
             return null;
         }
-        return SpoilageRulesLoader.INSTANCE.profileFor(stack);
+        SpoilageProfile profile = SpoilageRulesLoader.INSTANCE.profileFor(stack);
+        if (profile == null) {
+            return null;
+        }
+        double multiplier = MarsSpoilageConfig.SHELF_LIFE_MULTIPLIER.get();
+        if (multiplier == 1.0) {
+            return profile;
+        }
+        return new SpoilageProfile(
+                Math.round(profile.shelfLifeTicks() * multiplier),
+                Math.round(profile.staleThresholdTicks() * multiplier),
+                profile.cancelSpoiledConsumption());
     }
 
     private static boolean touchOwnFreshness(ServerLevel level, ItemStack stack) {
