@@ -141,9 +141,8 @@ public class SpoilageEvents {
         FreshnessData updated = data.updatedTo(gameTime);
         SpoilageState state = updated.state();
 
-        Component suffix = Component.translatable("tooltip.marsfoodspoilage.freshness." + state.name().toLowerCase());
         Component name = event.getToolTip().get(0);
-        event.getToolTip().set(0, Component.empty().append(name).append(" (").append(suffix).append(")"));
+        event.getToolTip().set(0, FreshnessDisplay.nameWithFreshness(stack, name, gameTime));
 
         if (state != SpoilageState.SPOILED) {
             double ticksPerHour = 1000.0 / MarsSpoilageConfig.TIMESPEED.get();
