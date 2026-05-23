@@ -59,6 +59,8 @@ public class ServerConfig {
             " IMPORTANT - it will *overwrite* the overworld spawn point; it will NOT set per-dimension spawn points!\n" +
             " Note that this option may or may not conflict with mod-added custom beds that differ to the vanilla Minecraft bed.\n" +
             " This means that if this config is enabled, mod-added custom beds *may* still block it with their own config; or if disabled, mod-added beds *may* still allow setting spawn.";
+    public final ModConfigSpec.BooleanValue leafLitterSleepEnabled;
+    private static final String leafLitterSleepEnabledTxt = " If enabled, two adjacent fully-stacked leaf litter blocks can be slept on like a bed.";
 
 
     public ServerConfig(final ModConfigSpec.Builder builder) {
@@ -125,6 +127,9 @@ public class ServerConfig {
         featureSetSpawnAnyDimension = builder
                 .comment(featureSetSpawnAnyDimensionTxt)
                 .define("featureSetSpawnAnyDimension", false);
+        leafLitterSleepEnabled = builder
+                .comment(leafLitterSleepEnabledTxt)
+                .define("leafLitterSleepEnabled", true);
         builder.pop();
     }
 
