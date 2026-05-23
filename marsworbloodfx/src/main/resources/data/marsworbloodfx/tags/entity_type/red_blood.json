@@ -1,0 +1,11 @@
+{
+  "values": [
+    "minecraft:player",
+    "#minecraft:followable_friendly_mobs",
+    "#minecraft:aquatic",
+    "#minecraft:raiders",
+    "#minecraft:zombies",
+    "minecraft:phantom",
+    "minecraft:hoglin"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "marsworbloodfx:item/ground_markings/blood_splatter/blood_splatter_0",
+    "tints": [
+      {
+        "type": "constant",
+        "value": 11831073
+      }
+    ]
+  }
+}

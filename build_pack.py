@@ -22,6 +22,7 @@ MOD_PROJECTS = (
     "marsflinttool",
     "marsstoneage",
     "marsfoodspoilage",
+    "marsworbloodfx",
     "marssleepingoverhaul",
     "marscompat",
 )
