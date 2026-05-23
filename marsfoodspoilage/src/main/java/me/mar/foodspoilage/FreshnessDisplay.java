@@ -1,5 +1,6 @@
 package me.mar.foodspoilage;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -14,7 +15,12 @@ public final class FreshnessDisplay {
         }
 
         SpoilageState state = data.updatedTo(gameTime).state();
+        ChatFormatting color = switch (state) {
+            case FRESH   -> ChatFormatting.AQUA;
+            case STALE   -> ChatFormatting.GOLD;
+            case SPOILED -> ChatFormatting.RED;
+        };
         Component suffix = Component.translatable("tooltip.marsfoodspoilage.freshness." + state.name().toLowerCase());
-        return Component.empty().append(baseName).append(" (").append(suffix).append(")");
+        return Component.empty().append(baseName).append(" (").append(suffix).append(")").withStyle(color);
     }
 }
