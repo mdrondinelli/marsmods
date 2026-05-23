@@ -10,8 +10,8 @@ public class MarsSpoilageConfig {
             .defineInRange("timespeed", 1.0, 0.01, 1000.0);
 
     public static final ModConfigSpec.DoubleValue STALE_EAT_DURATION_MULTIPLIER = BUILDER
-            .comment("Multiplier for stale food eat duration. 1.0 = vanilla eat speed. 2.0 = stale food takes twice as long to eat.")
-            .defineInRange("staleEatDurationMultiplier", 2.0, 1.0, 1000.0);
+            .comment("Multiplier for stale food eat duration. 1.0 = vanilla eat speed. 3.0 = stale food takes three times as long to eat.")
+            .defineInRange("staleEatDurationMultiplier", 3.0, 1.0, 1000.0);
 
     public static final ModConfigSpec.DoubleValue SPOILED_EAT_DURATION_MULTIPLIER = BUILDER
             .comment("Multiplier for spoiled food eat duration. 1.0 = vanilla eat speed. 4.0 = spoiled food takes four times as long to eat.")

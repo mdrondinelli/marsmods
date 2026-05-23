@@ -26,9 +26,9 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 public class SpoilageEvents {
     private static final int TOUCH_INTERVAL_TICKS = 20;
     private static final int POISON_DURATION_TICKS = 15 * 20;
-    private static final int NAUSEA_DURATION_TICKS = 10 * 20;
-    private static final int WEAKNESS_DURATION_TICKS = 30 * 20;
-    private static final int SLOWNESS_DURATION_TICKS = 20 * 20;
+    private static final int NAUSEA_DURATION_TICKS = 30 * 20;
+    private static final int WEAKNESS_DURATION_TICKS = 90 * 20;
+    private static final int SLOWNESS_DURATION_TICKS = 60 * 20;
     private static final int HUNGER_DURATION_TICKS = 30 * 20;
 
     public void makeFoodUnstackable(ModifyDefaultComponentsEvent event) {
@@ -90,23 +90,16 @@ public class SpoilageEvents {
 
     @SubscribeEvent
     public void touchBeforeEating(LivingEntityUseItemEvent.Start event) {
-        if (!(event.getEntity().level() instanceof ServerLevel level)) {
-            return;
-        }
-
         ItemStack stack = event.getItem();
-        SpoilageService.touchStack(level, stack);
-        SpoilageProfile profile = SpoilageService.profileFor(stack);
-        if (profile == null) {
+        if (!stack.has(DataComponents.FOOD) || event.getDuration() <= 0) {
             return;
         }
 
-        SpoilageState state = SpoilageService.getState(stack, level.getGameTime());
-        if (state == SpoilageState.STALE && stack.has(DataComponents.FOOD) && event.getDuration() > 0) {
-            event.setDuration(multipliedDuration(event.getDuration(), MarsSpoilageConfig.STALE_EAT_DURATION_MULTIPLIER.get()));
-        } else if (state == SpoilageState.SPOILED && stack.has(DataComponents.FOOD) && event.getDuration() > 0) {
-            event.setDuration(multipliedDuration(event.getDuration(), MarsSpoilageConfig.SPOILED_EAT_DURATION_MULTIPLIER.get()));
+        if (event.getEntity().level() instanceof ServerLevel level) {
+            SpoilageService.touchStack(level, stack);
         }
+
+        event.setDuration(stack.getUseDuration(event.getEntity()));
     }
 
     @SubscribeEvent
@@ -177,12 +170,6 @@ public class SpoilageEvents {
             }
         }
         menu.broadcastChanges();
-    }
-
-    private static int multipliedDuration(int duration, double multiplier) {
-        double multiplied = Math.ceil(duration * multiplier);
-        int clamped = (int) Math.min(Integer.MAX_VALUE, multiplied);
-        return Math.max(duration, clamped);
     }
 
     private static void applySpoiledFoodEffects(LivingEntity entity, SpoiledFoodEffects effects) {

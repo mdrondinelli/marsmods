@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.component.ItemContainerContents;
 
 public final class SpoilageService {
@@ -63,15 +64,48 @@ public final class SpoilageService {
         if (existing == null) {
             FreshnessData updated = new FreshnessData(now, profile.shelfLifeTicks(), profile.shelfLifeTicks(), profile.staleThresholdTicks());
             stack.set(ModDataComponents.FRESHNESS.get(), updated);
+            updateConsumableForStateChange(stack, SpoilageState.FRESH, updated.state());
             return true;
         }
 
         FreshnessData updated = existing.updatedTo(now);
-        if (updated.remainingFreshTicks() == 0 && existing.remainingFreshTicks() != 0) {
+        if (updated.state() != existing.state()) {
             stack.set(ModDataComponents.FRESHNESS.get(), updated);
+            updateConsumableForStateChange(stack, existing.state(), updated.state());
             return true;
         }
         return false;
+    }
+
+    private static void updateConsumableForStateChange(ItemStack stack, SpoilageState oldState, SpoilageState newState) {
+        Consumable current = stack.get(DataComponents.CONSUMABLE);
+        if (current == null) {
+            return;
+        }
+
+        double ratio = eatDurationMultiplier(newState) / eatDurationMultiplier(oldState);
+        Consumable updated = multipliedConsumable(current, ratio);
+        if (!updated.equals(current)) {
+            stack.set(DataComponents.CONSUMABLE, updated);
+        }
+    }
+
+    private static double eatDurationMultiplier(SpoilageState state) {
+        return switch (state) {
+            case FRESH -> 1.0;
+            case STALE -> MarsSpoilageConfig.STALE_EAT_DURATION_MULTIPLIER.get();
+            case SPOILED -> MarsSpoilageConfig.SPOILED_EAT_DURATION_MULTIPLIER.get();
+        };
+    }
+
+    private static Consumable multipliedConsumable(Consumable original, double multiplier) {
+        float consumeSeconds = (float) (original.consumeSeconds() * multiplier);
+        return new Consumable(
+                consumeSeconds,
+                original.animation(),
+                original.sound(),
+                original.hasConsumeParticles(),
+                original.onConsumeEffects());
     }
 
     private static boolean touchNestedContainer(ServerLevel level, ItemStack stack) {
