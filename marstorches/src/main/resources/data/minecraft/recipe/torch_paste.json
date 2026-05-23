@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "marstorches:lit_torch",
+    "marstorches:glowstone_paste"
+  ],
+  "result": {
+    "id": "minecraft:torch"
+  }
+}

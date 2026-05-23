@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "SSS"
+  ],
+  "key": {
+    "P": "minecraft:paper",
+    "S": "#minecraft:wooden_slabs"
+  },
+  "result": {
+    "id": "marstorches:matchbox"
+  }
+}

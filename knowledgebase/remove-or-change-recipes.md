@@ -28,9 +28,19 @@ public void removeWoodenToolRecipes(ModifyRecipeJsonsEvent event) {
 - `minecraft:wooden_sword`
 - `minecraft:stone_sword`
 
+## Why File Overrides Fail (Root Cause)
+
+`RecipeManager.prepare()` uses `SimpleJsonResourceReloadListener.scanDirectoryWithModifier()`, which calls `FileToIdConverter.listMatchingResources()` first. That call selects **one resource per file path** based on resource pack priority — highest-priority pack wins.
+
+NeoForge (≥ 26.1.2.61-beta) bundles its own versions of all vanilla recipes in its JAR (modified to use tag-based ingredients like `c:rods/wooden`). The NeoForge JAR has higher resource pack priority than regular mod JARs. So when a mod provides `data/minecraft/recipe/torch.json` with `neoforge:never`, NeoForge's version of that file is selected instead — the mod's file is never loaded, and the condition is never evaluated.
+
+`ModifyRecipeJsonsEvent` fires on the already-merged map (after priority resolution), so it can remove any entry regardless of source.
+
+In NeoForge 26.1.2.36-beta, NeoForge had not yet moved vanilla recipes into its own JAR — the tag ingredient overhaul landed between .36 and .61 — so mod file overrides worked there.
+
 ## Failed Approaches In This Project
 
-These did not remove the recipe in observed testing:
+These did not remove the recipe in observed testing on NeoForge **26.1.2.61-beta**:
 
 - empty file override at `src/main/resources/data/minecraft/recipe/<id>.json`
 - JSON override with `neoforge:conditions` and `neoforge:never`

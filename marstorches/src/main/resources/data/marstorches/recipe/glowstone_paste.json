@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:glowstone_dust",
+    "minecraft:clay_ball",
+    "minecraft:water_bucket"
+  ],
+  "result": {
+    "id": "marstorches:glowstone_paste"
+  }
+}

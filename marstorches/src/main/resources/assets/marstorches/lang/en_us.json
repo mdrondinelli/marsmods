@@ -1,0 +1,14 @@
+{
+    "_comment": "Realistic Torches - Language File",
+    "_comment": "UNITED STATES - ENGLISH",
+
+    "_comment": "BLOCKS",
+    "block.marstorches.torch": "Realistic Torch",
+
+    "_comment": "ITEMS",
+    "item.marstorches.unlit_torch": "Unlit Torch",
+    "item.marstorches.lit_torch": "Torch",
+    "item.marstorches.matchbox": "Matchbox",
+    "item.marstorches.glowstone_crystal": "Glowstone Crystal",
+    "item.marstorches.glowstone_paste": "Glowstone Paste"
+}
