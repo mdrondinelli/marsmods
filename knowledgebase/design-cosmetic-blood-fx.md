@@ -10,6 +10,7 @@ For cosmetic effects that should be visible to nearby players, keep spawning ser
 - Require final damage above zero.
 - Gate eligible entities through ordered datapack entity type profile tags, not hardcoded Java lists.
 - Use common config for broad performance and presentation knobs.
+- If armor should reduce cosmetic blood, gate the entire visual effect with a chance based on `LivingEntity#getArmorValue()` after resolving real final damage.
 
 ## WOR-Style Ground Splatters
 
@@ -20,6 +21,16 @@ The WOR datapack uses a flat tinted item model on an `item_display` entity. In J
 - Set `DataComponents.ITEM_MODEL` on the stack to point at an item definition under `assets/<modid>/items/...`.
 - Tag the display entity so cleanup and interaction handlers can identify only this mod's decals.
 - Clean decals periodically with `LevelTickEvent.Post`, not every tick.
+
+## Cosmetic Bleeding Trails
+
+For more immersion without gameplay impact, keep bleeding state short-lived and visual-only:
+
+- Start or extend a server-side timer after meaningful final damage.
+- Track by entity UUID per `ServerLevel`, and remove entries when expired, dead, removed, or unloaded.
+- Tick at a configurable drip interval, not every tick.
+- Spawn small body/feet particles and ground splatters only when movement or stationary-pool timing allows.
+- Keep per-chunk decal caps and an active bleeding entity cap.
 
 ## Data And Pack Overrides
 
