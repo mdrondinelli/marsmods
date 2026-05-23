@@ -23,6 +23,7 @@
     "BedRestMixinsCommonClientInBedChatScreen",
     "FeaturesMixinsCommonClientChatScreen",
     "FeaturesMixinsCommonClientInBedChatScreen",
+    "FeaturesMixinsCommonClientLivingEntity",
     "FeaturesMixinsCommonClientScreen",
     "TimelapseMixinsCommonClientCamera",
     "TimelapseMixinsCommonClientGui",

@@ -14,7 +14,13 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.multiplayer.chat.ChatAbilities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SegmentableBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,6 +30,30 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public class FeaturesMixinsCommonClient {}
+
+@Mixin(LivingEntity.class)
+abstract class FeaturesMixinsCommonClientLivingEntity {
+    /**
+     * For leaf litter sleeping: return the direction toward the adjacent leaf litter so the renderer
+     * uses a fixed orientation instead of falling back to the player's arbitrary yaw.
+     */
+    @Inject(method = "getBedOrientation", at = @At("RETURN"), cancellable = true)
+    private void leafLitterBedOrientation(CallbackInfoReturnable<Direction> cir) {
+        if (cir.getReturnValue() != null) return;
+        LivingEntity self = (LivingEntity)(Object)this;
+        if (self.getSleepingPos().isEmpty()) return;
+        BlockPos pos = self.getSleepingPos().get();
+        BlockState state = self.level().getBlockState(pos);
+        if (!state.is(Blocks.LEAF_LITTER) || state.getValue(SegmentableBlock.AMOUNT) != SegmentableBlock.MAX_SEGMENT) return;
+        for (Direction dir : Direction.Plane.HORIZONTAL) {
+            BlockState adj = self.level().getBlockState(pos.relative(dir));
+            if (adj.is(Blocks.LEAF_LITTER) && adj.getValue(SegmentableBlock.AMOUNT) == SegmentableBlock.MAX_SEGMENT) {
+                cir.setReturnValue(dir);
+                return;
+            }
+        }
+    }
+}
 
 @Mixin(ChatScreen.class)
 abstract class FeaturesMixinsCommonClientChatScreen extends Screen implements ChatScreenProxy {
