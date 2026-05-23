@@ -52,7 +52,7 @@ public class SpoilageRulesLoader extends SimplePreparableReloadListener<Spoilage
         List<SpoilageRule> spoilage = new ArrayList<>();
         List<SpoiledEffectsRule> spoiledEffects = new ArrayList<>();
         loaded.stream()
-                .sorted(Comparator.comparing(LoadedRules::packOrder).thenComparing(LoadedRules::id))
+                .sorted(Comparator.comparing(LoadedRules::packOrder).reversed().thenComparing(LoadedRules::id))
                 .forEach(loadedRules -> {
                     spoilage.addAll(loadedRules.rules().spoilage());
                     spoiledEffects.addAll(loadedRules.rules().spoiledEffects());
@@ -90,9 +90,7 @@ public class SpoilageRulesLoader extends SimplePreparableReloadListener<Spoilage
 
     @Nullable
     public SpoilageProfile profileFor(ItemStack stack) {
-        List<SpoilageRule> spoilage = rules.spoilage();
-        for (int i = spoilage.size() - 1; i >= 0; i--) {
-            SpoilageRule rule = spoilage.get(i);
+        for (SpoilageRule rule : rules.spoilage()) {
             if (stack.is(rule.tag())) {
                 return rule.profile().orElse(null);
             }
@@ -102,9 +100,7 @@ public class SpoilageRulesLoader extends SimplePreparableReloadListener<Spoilage
 
     @Nullable
     public SpoiledFoodEffects spoiledEffectsFor(ItemStack stack) {
-        List<SpoiledEffectsRule> spoiledEffects = rules.spoiledEffects();
-        for (int i = spoiledEffects.size() - 1; i >= 0; i--) {
-            SpoiledEffectsRule rule = spoiledEffects.get(i);
+        for (SpoiledEffectsRule rule : rules.spoiledEffects()) {
             if (stack.is(rule.tag())) {
                 return rule.effects();
             }

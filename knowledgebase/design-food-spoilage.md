@@ -17,7 +17,7 @@ Use item data components for per-stack freshness. In Minecraft/NeoForge 26.1.2, 
 - If food must not stack, use `ModifyDefaultComponentsEvent` on the mod event bus and set `DataComponents.MAX_STACK_SIZE` to `1` for items with `DataComponents.FOOD`.
 - To change stale or spoiled food eat time, handle `LivingEntityUseItemEvent.Start` after touching freshness and call `setDuration`; keep multipliers in common config so packs can tune the penalties.
 - To apply spoiled-food consequences, use `LivingEntityUseItemEvent.Finish`; the event item is the pre-consumption copy, so it can still be checked for freshness data after vanilla consumes the stack.
-- Load additive rule files from `data/*/spoilage_rules/*.json`. Keep spoilage profiles and spoiled-food effect rules as separate ordered tag-match lists. Preserve order within each file; higher-priority packs should beat lower-priority packs and the mod baseline by resolving matching rules from the end of the merged lists.
+- Load additive rule files from `data/*/spoilage_rules/*.json`. Keep spoilage profiles and spoiled-food effect rules as separate ordered tag-match lists. Scan higher-priority packs before lower-priority packs and preserve front-to-back order within each file, so specific rules can be placed before broad fallback tags.
 - Treat `marsfoodspoilage:does_not_spoil` as a hard-coded exclusion tag before rule matching, not as a normal spoilage rule; it must override broader food tags.
 - `ItemTooltipEvent` only changes inventory tooltip lines. The hotbar selected-item popup uses `ItemStack#getHoverName` / `getHighlightTip`, so freshness in that popup needs a client mixin or equivalent hook on the highlight path.
 
