@@ -26,6 +26,7 @@ Task-oriented notes from this NeoForge project. Use this as a directory: find th
 - [Design sleep or time systems](design-sleep-or-time-systems.md)
 - [Design food spoilage](design-food-spoilage.md)
 - [Design cosmetic blood FX](design-cosmetic-blood-fx.md)
+- [Design timed campfires](design-timed-campfires.md)
 - [Port an Architectury mod to NeoForge-only](port-architectury-mod-to-neoforge.md)
 - [Disable vanilla tutorial hints](disable-vanilla-tutorial-hints.md)
 
