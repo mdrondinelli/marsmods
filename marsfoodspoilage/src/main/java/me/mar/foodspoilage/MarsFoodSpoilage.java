@@ -30,8 +30,10 @@ public class MarsFoodSpoilage {
         modBus.addListener(EventPriority.LOWEST, ModifyDefaultComponentsEvent.class, events::makeFoodUnstackable);
         modBus.addListener(this::buildCreativeTabContents);
         NeoForge.EVENT_BUS.register(events);
-        NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event ->
-                event.addListener(Identifier.fromNamespaceAndPath(MODID, "spoilage_rules_loader"), SpoilageRulesLoader.INSTANCE));
+        NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> {
+            event.addListener(Identifier.fromNamespaceAndPath(MODID, "spoilage_rules_loader"), SpoilageRulesLoader.INSTANCE);
+            event.addListener(Identifier.fromNamespaceAndPath(MODID, "drying_recipes_loader"), DryingRecipesLoader.INSTANCE);
+        });
     }
 
     private void buildCreativeTabContents(BuildCreativeModeTabContentsEvent event) {

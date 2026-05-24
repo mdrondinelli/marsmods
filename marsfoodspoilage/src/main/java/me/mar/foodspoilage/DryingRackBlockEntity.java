@@ -12,6 +12,8 @@ import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.TagValueOutput;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 public class DryingRackBlockEntity extends BlockEntity {
     public static final int SLOTS = 1;
     private final NonNullList<ItemStack> items = NonNullList.withSize(SLOTS, ItemStack.EMPTY);
+    long dryingStartTick = -1L;
 
     public DryingRackBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.DRYING_RACK.get(), pos, state);
@@ -36,6 +39,8 @@ public class DryingRackBlockEntity extends BlockEntity {
                 items.set(i, stack.copyWithCount(1));
                 if (level instanceof ServerLevel sl) {
                     SpoilageService.enterRack(sl, items.get(i));
+                    DryingRecipe recipe = DryingRecipesLoader.INSTANCE.recipeFor(items.get(i));
+                    dryingStartTick = recipe != null ? sl.getGameTime() : -1L;
                 }
                 return true;
             }
@@ -47,6 +52,7 @@ public class DryingRackBlockEntity extends BlockEntity {
         for (int i = SLOTS - 1; i >= 0; i--) {
             if (!items.get(i).isEmpty()) {
                 ItemStack stack = items.set(i, ItemStack.EMPTY);
+                dryingStartTick = -1L;
                 if (level instanceof ServerLevel sl) {
                     SpoilageService.exitRack(sl, stack);
                 }
@@ -56,17 +62,37 @@ public class DryingRackBlockEntity extends BlockEntity {
         return ItemStack.EMPTY;
     }
 
+    public static void serverTick(Level level, BlockPos pos, BlockState state, DryingRackBlockEntity be) {
+        if (level.getGameTime() % 20 != 0) return;
+        if (be.dryingStartTick < 0) return;
+        ItemStack current = be.items.get(0);
+        if (current.isEmpty()) return;
+        DryingRecipe recipe = DryingRecipesLoader.INSTANCE.recipeFor(current);
+        if (recipe == null) {
+            be.dryingStartTick = -1L;
+            return;
+        }
+        if (level.getGameTime() - be.dryingStartTick >= recipe.durationTicks()) {
+            be.items.set(0, new ItemStack(recipe.output()));
+            SpoilageService.enterRack((ServerLevel) level, be.items.get(0));
+            be.dryingStartTick = -1L;
+            be.markUpdated();
+        }
+    }
+
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         items.clear();
         ContainerHelper.loadAllItems(input, items);
+        dryingStartTick = input.getLongOr("drying_start_tick", -1L);
     }
 
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         ContainerHelper.saveAllItems(output, items);
+        output.putLong("drying_start_tick", dryingStartTick);
     }
 
     @Override
@@ -90,6 +116,7 @@ public class DryingRackBlockEntity extends BlockEntity {
                 SpoilageService.exitRack(sl, stack);
             }
             Containers.dropContents(level, pos, items);
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.STICK, 4));
         }
     }
 

@@ -1,0 +1,7 @@
+{
+  "recipes": [
+    { "input": "minecraft:beef",     "output": "marsfoodspoilage:dried_beef",     "duration_ticks": 24000 },
+    { "input": "minecraft:mutton",   "output": "marsfoodspoilage:dried_mutton",   "duration_ticks": 24000 },
+    { "input": "minecraft:porkchop", "output": "marsfoodspoilage:dried_porkchop", "duration_ticks": 24000 }
+  ]
+}
