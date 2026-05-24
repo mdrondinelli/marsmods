@@ -123,6 +123,9 @@ public class DryingRackBlock extends Block implements EntityBlock {
         if (!stack.is(ModTags.Items.DRYABLE)) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
+        if (SpoilageService.getState(stack, level.getGameTime()) != SpoilageState.FRESH) {
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
         BlockPos bePos = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below();
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
