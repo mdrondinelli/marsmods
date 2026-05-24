@@ -1,5 +1,6 @@
 {
   "block.marsfoodspoilage.drying_rack": "Drying Rack",
+  "item.marsfoodspoilage.drying_rack": "Drying Rack",
   "tooltip.marsfoodspoilage.freshness.fresh": "Fresh",
   "tooltip.marsfoodspoilage.freshness.stale": "Stale",
   "tooltip.marsfoodspoilage.freshness.spoiled": "Spoiled",
