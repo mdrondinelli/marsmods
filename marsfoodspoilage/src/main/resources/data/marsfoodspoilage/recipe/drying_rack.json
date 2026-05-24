@@ -2,6 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
+    "P P",
     "sPs",
     "P P"
   ],

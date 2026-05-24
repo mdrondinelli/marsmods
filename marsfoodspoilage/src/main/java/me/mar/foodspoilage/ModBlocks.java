@@ -29,5 +29,6 @@ public final class ModBlocks {
     public static void register(IEventBus modBus) {
         BLOCKS.register(modBus);
         ITEMS.register(modBus);
+        ModBlockEntities.register(modBus);
     }
 }
