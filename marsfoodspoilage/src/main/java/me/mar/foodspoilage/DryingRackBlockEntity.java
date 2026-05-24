@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
@@ -18,7 +19,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class DryingRackBlockEntity extends BlockEntity {
-    public static final int SLOTS = 2;
+    public static final int SLOTS = 1;
     private final NonNullList<ItemStack> items = NonNullList.withSize(SLOTS, ItemStack.EMPTY);
 
     public DryingRackBlockEntity(BlockPos pos, BlockState state) {
@@ -33,6 +34,9 @@ public class DryingRackBlockEntity extends BlockEntity {
         for (int i = 0; i < SLOTS; i++) {
             if (items.get(i).isEmpty()) {
                 items.set(i, stack.copyWithCount(1));
+                if (level instanceof ServerLevel sl) {
+                    SpoilageService.enterRack(sl, items.get(i));
+                }
                 return true;
             }
         }
@@ -42,7 +46,11 @@ public class DryingRackBlockEntity extends BlockEntity {
     public ItemStack removeLastItem() {
         for (int i = SLOTS - 1; i >= 0; i--) {
             if (!items.get(i).isEmpty()) {
-                return items.set(i, ItemStack.EMPTY);
+                ItemStack stack = items.set(i, ItemStack.EMPTY);
+                if (level instanceof ServerLevel sl) {
+                    SpoilageService.exitRack(sl, stack);
+                }
+                return stack;
             }
         }
         return ItemStack.EMPTY;
@@ -77,7 +85,10 @@ public class DryingRackBlockEntity extends BlockEntity {
 
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-        if (level != null) {
+        if (level instanceof ServerLevel sl) {
+            for (ItemStack stack : items) {
+                SpoilageService.exitRack(sl, stack);
+            }
             Containers.dropContents(level, pos, items);
         }
     }

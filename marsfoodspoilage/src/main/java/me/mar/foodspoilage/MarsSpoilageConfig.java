@@ -17,5 +17,9 @@ public class MarsSpoilageConfig {
             .comment("Multiplier for spoiled food eat duration. 1.0 = vanilla eat speed. 4.0 = spoiled food takes four times as long to eat.")
             .defineInRange("spoiledEatDurationMultiplier", 4.0, 1.0, 1000.0);
 
+    public static final ModConfigSpec.DoubleValue RACK_SPOILAGE_RATE = BUILDER
+            .comment("Spoilage rate multiplier for food on the drying rack. 0.0 = no spoilage. 1.0 = normal rate.")
+            .defineInRange("rackSpoilageRate", 0.0, 0.0, 1.0);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

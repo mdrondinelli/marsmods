@@ -62,7 +62,7 @@ public final class SpoilageService {
         long now = level.getGameTime();
         FreshnessData existing = stack.get(ModDataComponents.FRESHNESS.get());
         if (existing == null) {
-            FreshnessData updated = new FreshnessData(now, profile.shelfLifeTicks(), profile.shelfLifeTicks(), profile.staleThresholdTicks());
+            FreshnessData updated = new FreshnessData(now, profile.shelfLifeTicks(), profile.shelfLifeTicks(), profile.staleThresholdTicks(), 1.0f);
             stack.set(ModDataComponents.FRESHNESS.get(), updated);
             updateConsumableForStateChange(stack, SpoilageState.FRESH, updated.state());
             return true;
@@ -106,6 +106,21 @@ public final class SpoilageService {
                 original.sound(),
                 original.hasConsumeParticles(),
                 original.onConsumeEffects());
+    }
+
+    public static void enterRack(ServerLevel level, ItemStack stack) {
+        touchStack(level, stack);
+        FreshnessData data = stack.get(ModDataComponents.FRESHNESS.get());
+        if (data != null) {
+            stack.set(ModDataComponents.FRESHNESS.get(), data.withRate(MarsSpoilageConfig.RACK_SPOILAGE_RATE.get().floatValue()));
+        }
+    }
+
+    public static void exitRack(ServerLevel level, ItemStack stack) {
+        FreshnessData data = stack.get(ModDataComponents.FRESHNESS.get());
+        if (data != null) {
+            stack.set(ModDataComponents.FRESHNESS.get(), data.updatedTo(level.getGameTime()).withRate(1.0f));
+        }
     }
 
     private static boolean touchNestedContainer(ServerLevel level, ItemStack stack) {

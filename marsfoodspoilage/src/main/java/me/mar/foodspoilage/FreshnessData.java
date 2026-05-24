@@ -6,12 +6,13 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
-public record FreshnessData(long lastUpdateTick, long remainingFreshTicks, long initialFreshTicks, long staleThresholdTicks) {
+public record FreshnessData(long lastUpdateTick, long remainingFreshTicks, long initialFreshTicks, long staleThresholdTicks, float spoilageRate) {
     public static final Codec<FreshnessData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.LONG.fieldOf("last_update_tick").forGetter(FreshnessData::lastUpdateTick),
             Codec.LONG.fieldOf("remaining_fresh_ticks").forGetter(FreshnessData::remainingFreshTicks),
             Codec.LONG.fieldOf("initial_fresh_ticks").forGetter(FreshnessData::initialFreshTicks),
-            Codec.LONG.fieldOf("stale_threshold_ticks").forGetter(FreshnessData::staleThresholdTicks))
+            Codec.LONG.fieldOf("stale_threshold_ticks").forGetter(FreshnessData::staleThresholdTicks),
+            Codec.FLOAT.optionalFieldOf("spoilage_rate", 1.0f).forGetter(FreshnessData::spoilageRate))
             .apply(instance, FreshnessData::new));
 
     public static final StreamCodec<ByteBuf, FreshnessData> STREAM_CODEC = StreamCodec.composite(
@@ -19,12 +20,18 @@ public record FreshnessData(long lastUpdateTick, long remainingFreshTicks, long 
             ByteBufCodecs.VAR_LONG, FreshnessData::remainingFreshTicks,
             ByteBufCodecs.VAR_LONG, FreshnessData::initialFreshTicks,
             ByteBufCodecs.VAR_LONG, FreshnessData::staleThresholdTicks,
+            ByteBufCodecs.FLOAT, FreshnessData::spoilageRate,
             FreshnessData::new);
 
     public FreshnessData updatedTo(long currentTick) {
         long elapsed = Math.max(0, currentTick - this.lastUpdateTick);
-        long remaining = Math.max(0, this.remainingFreshTicks - elapsed);
-        return new FreshnessData(currentTick, remaining, this.initialFreshTicks, this.staleThresholdTicks);
+        long effective = Math.round(elapsed * this.spoilageRate);
+        long remaining = Math.max(0, this.remainingFreshTicks - effective);
+        return new FreshnessData(currentTick, remaining, this.initialFreshTicks, this.staleThresholdTicks, this.spoilageRate);
+    }
+
+    public FreshnessData withRate(float rate) {
+        return new FreshnessData(lastUpdateTick, remainingFreshTicks, initialFreshTicks, staleThresholdTicks, rate);
     }
 
     public SpoilageState state() {
