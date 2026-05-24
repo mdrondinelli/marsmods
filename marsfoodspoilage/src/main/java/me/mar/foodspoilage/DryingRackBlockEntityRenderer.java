@@ -13,11 +13,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jspecify.annotations.Nullable;
 
-@OnlyIn(Dist.CLIENT)
 public class DryingRackBlockEntityRenderer implements BlockEntityRenderer<DryingRackBlockEntity, DryingRackRenderState> {
     // Slot X positions in NORTH-facing model space (x=2/16 and x=14/16, y=17/16, z=8/16)
     private static final float[] SLOT_X = { 2f / 16f, 14f / 16f };
