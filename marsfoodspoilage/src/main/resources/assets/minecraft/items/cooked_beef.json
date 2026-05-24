@@ -1,0 +1,26 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "marsfoodspoilage:freshness_state",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/cooked_beef"
+    },
+    "cases": [
+      {
+        "when": "stale",
+        "model": {
+          "type": "minecraft:model",
+          "model": "marsfoodspoilage:item/cooked_beef_stale"
+        }
+      },
+      {
+        "when": "spoiled",
+        "model": {
+          "type": "minecraft:model",
+          "model": "marsfoodspoilage:item/cooked_beef_spoiled"
+        }
+      }
+    ]
+  }
+}
