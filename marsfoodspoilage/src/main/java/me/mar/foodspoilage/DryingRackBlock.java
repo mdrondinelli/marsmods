@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -26,18 +27,21 @@ import org.jspecify.annotations.Nullable;
 public class DryingRackBlock extends Block {
     public static final String NAME = "drying_rack";
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     private static final VoxelShape LOWER_SHAPE = Block.box(0, 0, 0, 16, 15, 16);
     private static final VoxelShape UPPER_SHAPE = Block.box(0, 0, 0, 16, 8, 16);
 
     public DryingRackBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(HALF, DoubleBlockHalf.LOWER)
+                .setValue(FACING, Direction.NORTH));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(HALF);
+        builder.add(HALF, FACING);
     }
 
     @Override
@@ -55,7 +59,9 @@ public class DryingRackBlock extends Block {
         BlockPos pos = context.getClickedPos();
         Level level = context.getLevel();
         if (pos.getY() < level.getMaxY() && level.getBlockState(pos.above()).canBeReplaced(context)) {
-            return this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER);
+            return this.defaultBlockState()
+                    .setValue(HALF, DoubleBlockHalf.LOWER)
+                    .setValue(FACING, context.getHorizontalDirection().getOpposite());
         }
         return null;
     }
