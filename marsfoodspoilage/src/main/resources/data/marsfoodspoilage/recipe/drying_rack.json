@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "sPs",
+    "P P"
+  ],
+  "key": {
+    "P": "minecraft:stick",
+    "s": "minecraft:string"
+  },
+  "result": {
+    "id": "marsfoodspoilage:drying_rack"
+  }
+}
