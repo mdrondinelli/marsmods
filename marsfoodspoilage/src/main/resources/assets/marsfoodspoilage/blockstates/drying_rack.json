@@ -1,5 +1,6 @@
 {
   "variants": {
-    "": { "model": "marsfoodspoilage:block/drying_rack" }
+    "half=lower": { "model": "marsfoodspoilage:block/drying_rack" },
+    "half=upper": { "model": "marsfoodspoilage:block/drying_rack_top" }
   }
 }
