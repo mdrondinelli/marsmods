@@ -14,14 +14,6 @@ public interface IClientState {
 
     <T> void sleepButtonAssign(T buttonRaw);
 
-    void setTimelapseCamera(Player player, boolean timelapseEnabled);
-
-    int getTimelapseCinematicStage();
-
-    void advanceTimelapseCinematicStage();
-
-    boolean isTimelapseCinematicActive();
-
     void sleepButtonEnable(boolean enable);
 
     void onClickSleep();

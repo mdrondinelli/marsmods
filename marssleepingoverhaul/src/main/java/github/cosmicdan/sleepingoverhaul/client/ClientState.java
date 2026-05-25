@@ -22,18 +22,10 @@ import java.util.TimerTask;
 public class ClientState implements IClientState {
     private Button leaveButton = null;
     private Button sleepButton = null;
-    /**
-     * 0 = Inactive/Stopped
-     * 1 = Started
-     * 2 = Playing
-     * 3 = Ended
-     */
-    private int timelapseCinematicStage = 0;
 
     @Override
     public void recvTimelapseChange(TimelapseChangePacket packet, Player player) {
         final long timelapseEnd = packet.timelapseEnd();
-        setTimelapseCamera(player, timelapseEnd > -1);
         SleepingOverhaul.serverState.setTimelapseEndForClient(timelapseEnd);
     }
 
@@ -68,34 +60,6 @@ public class ClientState implements IClientState {
         if (buttonRaw instanceof Button button) {
             sleepButton = button;
         }
-    }
-
-    @Override
-    public void setTimelapseCamera(Player player, final boolean timelapseEnabled) {
-        if (timelapseEnabled && player.isSleeping()) {
-            if (timelapseCinematicStage == 0)
-                timelapseCinematicStage = 1;
-        } else {
-            timelapseCinematicStage = 3;
-        }
-    }
-
-    @Override
-    public int getTimelapseCinematicStage() {
-        return timelapseCinematicStage;
-    }
-
-    @Override
-    public void advanceTimelapseCinematicStage() {
-        if (timelapseCinematicStage == 3)
-            timelapseCinematicStage = 0;
-        else
-            timelapseCinematicStage++;
-    }
-
-    @Override
-    public boolean isTimelapseCinematicActive() {
-        return timelapseCinematicStage != 0;
     }
 
     @Override

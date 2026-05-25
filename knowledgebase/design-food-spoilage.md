@@ -14,9 +14,10 @@ Use item data components for per-stack freshness. In Minecraft/NeoForge 26.1.2, 
   - loaded item entity sparse tick
   - item pickup pre-event
   - item use start before eating
-- If food must not stack, use `ModifyDefaultComponentsEvent` on the mod event bus and set `DataComponents.MAX_STACK_SIZE` to `1` for items with `DataComponents.FOOD`.
+- If spoilable food must not stack, use `ModifyDefaultComponentsEvent` on the mod event bus and set `DataComponents.MAX_STACK_SIZE` to `1` for items with `DataComponents.FOOD`, excluding items tagged `marsfoodspoilage:does_not_spoil`.
 - To apply spoiled-food consequences, use `LivingEntityUseItemEvent.Finish`; the event item is the pre-consumption copy, so it can still be checked for freshness data after vanilla consumes the stack.
 - Load additive rule files from `data/*/spoilage_rules/*.json`. Keep spoilage profiles and spoiled-food effect rules as separate ordered tag-match lists. Scan higher-priority packs before lower-priority packs and preserve front-to-back order within each file, so specific rules can be placed before broad fallback tags.
+- Spoilage rules currently match item tags only. For a single item with a special shelf life, add a focused tag such as `data/marsfoodspoilage/tags/item/foods/dried_plant.json`, then place that rule before broad fallbacks like `c:foods`.
 - Treat `marsfoodspoilage:does_not_spoil` as a hard-coded exclusion tag before rule matching, not as a normal spoilage rule; it must override broader food tags.
 - `ItemTooltipEvent` only changes inventory tooltip lines. The hotbar selected-item popup uses `ItemStack#getHoverName` / `getHighlightTip`, so freshness in that popup needs a client mixin or equivalent hook on the highlight path.
 - To reduce active-use interruptions and inventory churn, touch logic should write freshness back only when the computed freshness state changes, not on every elapsed-time update. Tooltips and eating logic can compute exact freshness lazily from the stored timestamp.

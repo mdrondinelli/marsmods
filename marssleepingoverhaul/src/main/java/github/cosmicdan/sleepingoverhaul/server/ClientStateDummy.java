@@ -28,20 +28,6 @@ public class ClientStateDummy implements IClientState {
     public <T> void sleepButtonAssign(final T button) {}
 
     @Override
-    public void setTimelapseCamera(Player player, boolean timelapseEnabled) {}
-
-    @Override
-    public int getTimelapseCinematicStage() {
-        return 0;
-    }
-
-    @Override
-    public void advanceTimelapseCinematicStage() {}
-
-    @Override
-    public boolean isTimelapseCinematicActive() {return false;}
-
-    @Override
     public void sleepButtonEnable(boolean enable) {}
 
     @Override

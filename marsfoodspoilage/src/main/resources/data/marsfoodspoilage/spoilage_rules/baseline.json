@@ -71,6 +71,13 @@
       }
     },
     {
+      "tag": "marsfoodspoilage:foods/dried_plant",
+      "profile": {
+        "shelf_life_ticks": 336000,
+        "stale_threshold_ticks": 48000
+      }
+    },
+    {
       "tag": "c:foods",
       "profile": {
         "shelf_life_ticks": 10000,

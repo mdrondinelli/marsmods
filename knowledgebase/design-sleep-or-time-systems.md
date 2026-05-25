@@ -10,6 +10,7 @@ Key detail:
 
 - it accelerates actual server ticking during sleep
 - it does not simply skip time
+- this fork removed the custom client timelapse panorama/cinematic camera; the old `marscompat` Distant Horizons render-cancel workaround was only for that camera and was deleted with the module
 
 ## Useful Concepts
 

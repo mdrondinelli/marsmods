@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "spawn": {
+      "trigger": "minecraft:tick"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "marsflinttool:flint_tool"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "spawn",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "marsflinttool:flint_tool"
+    ]
+  }
+}

@@ -8,10 +8,6 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class ClientConfig {
     private static final String sectionGeneral = "clientGeneral";
     private static final String sectionGeneralTxt = " General client-side settings.";
-    public final ModConfigSpec.EnumValue<TimelapseCameraType> timelapseCameraType;
-    private static final String timelapseCameraTypeTxt = " Camera effect to use under Timelapse";
-    public final ModConfigSpec.IntValue timelapseDimValue;
-    private static final String timelapseDimValueTxt = " Screen dim to use under Timelapse. The default value of 0 will remove the screen dim.";
     public final ModConfigSpec.BooleanValue bedRestOnEnter;
     private static final String bedRestOnEnterTxt = " If enabled, pressing enter on In Bed Chat Screen with zero chat text will also function as Sleep button.\n" +
             " Requires bedRestEnabled in server config, otherwise does nothing otherwise.";
@@ -26,12 +22,6 @@ public class ClientConfig {
     public ClientConfig(final ModConfigSpec.Builder builder) {
         builder.push(sectionGeneral).comment(sectionGeneralTxt);
 
-        timelapseCameraType = builder
-                .comment(timelapseCameraTypeTxt)
-                .defineEnum("timelapseCameraType", TimelapseCameraType.SurfaceOrbit);
-        timelapseDimValue = builder
-                .comment(timelapseDimValueTxt)
-                .defineInRange("timelapseDimValue", 0, 0, 100);
         bedRestOnEnter = builder
                 .comment(bedRestOnEnterTxt)
                 .define("bedRestWithChatEnter", true);
@@ -39,11 +29,5 @@ public class ClientConfig {
                 .comment(inBedChatFixesTxt)
                 .define("inBedChatFixes", true);
         builder.pop();
-    }
-
-    public enum TimelapseCameraType {
-        SurfaceOrbit,
-        SurfaceRotation,
-        None,
     }
 }

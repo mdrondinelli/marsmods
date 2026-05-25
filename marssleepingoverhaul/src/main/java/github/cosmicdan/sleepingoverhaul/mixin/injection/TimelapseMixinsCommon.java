@@ -114,7 +114,7 @@ abstract class TimelapseMixinsCommonPlayer extends LivingEntity {
     }
 
     /**
-     * For SP, immediately stop Timelapse and clear the camera
+     * For SP, immediately stop Timelapse.
      */
     @Inject(
         method = "stopSleepInBed",
@@ -126,8 +126,6 @@ abstract class TimelapseMixinsCommonPlayer extends LivingEntity {
                 SleepingOverhaul.serverState.stopTimelapseNow(serverLevel);
             }
         }
-        // Client-only but no need for check since Server just has ClientStateDummy
-        SleepingOverhaul.clientState.setTimelapseCamera((Player) (Object) this, false);
     }
 }
 

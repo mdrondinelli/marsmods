@@ -16,8 +16,6 @@ PACK_BUILD_DIR = REPO_ROOT / "build"
 EXTERNAL_DIR = REPO_ROOT / "external"
 DEFAULT_JAVA_HOME = Path("/usr/lib/jvm/java-25-openjdk-amd64")
 
-# marscompat has a compileOnly dependency on the sleepingoverhaul jar, so build
-# marssleepingoverhaul before marscompat.
 MOD_PROJECTS = (
     "marsflinttool",
     "marsstoneage",
@@ -26,7 +24,6 @@ MOD_PROJECTS = (
     "marscampfires",
     "marstorches",
     "marssleepingoverhaul",
-    "marscompat",
 )
 
 NON_PACK_JAR_SUFFIXES = ("-sources.jar", "-javadoc.jar", "-dev.jar", "-plain.jar")
