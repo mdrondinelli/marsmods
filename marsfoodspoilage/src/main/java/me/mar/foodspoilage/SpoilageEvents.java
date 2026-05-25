@@ -13,7 +13,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
@@ -30,13 +29,6 @@ public class SpoilageEvents {
     private static final int WEAKNESS_DURATION_TICKS = 90 * 20;
     private static final int SLOWNESS_DURATION_TICKS = 60 * 20;
     private static final int HUNGER_DURATION_TICKS = 30 * 20;
-
-    public void makeFoodUnstackable(ModifyDefaultComponentsEvent event) {
-        event.modifyMatching(
-                (item, components) -> components.get(DataComponents.FOOD) != null
-                        && !item.builtInRegistryHolder().is(ModTags.Items.DOES_NOT_SPOIL),
-                (components, context, item) -> components.set(DataComponents.MAX_STACK_SIZE, 1));
-    }
 
     @SubscribeEvent
     public void touchPlayerInventory(PlayerTickEvent.Post event) {
@@ -62,7 +54,7 @@ public class SpoilageEvents {
     public void touchJoinedItemEntity(EntityJoinLevelEvent event) {
         if (!event.getLevel().isClientSide() && event.getEntity() instanceof ItemEntity itemEntity
                 && event.getLevel() instanceof ServerLevel level) {
-            SpoilageService.touchStack(level, itemEntity.getItem());
+            SpoilageService.applyRate(level, itemEntity.getItem(), 1.0f);
         }
     }
 

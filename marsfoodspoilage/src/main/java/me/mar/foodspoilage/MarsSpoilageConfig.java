@@ -17,9 +17,29 @@ public class MarsSpoilageConfig {
             .comment("Multiplier for spoiled food eat duration. 1.0 = vanilla eat speed. 4.0 = spoiled food takes four times as long to eat.")
             .defineInRange("spoiledEatDurationMultiplier", 4.0, 1.0, 1000.0);
 
+    public static final ModConfigSpec.DoubleValue STALE_NUTRITION_MULTIPLIER = BUILDER
+            .comment("Multiplier for stale food nutrition (hunger restored). 1.0 = vanilla. 0.75 = 75% of fresh nutrition.")
+            .defineInRange("staleNutritionMultiplier", 0.75, 0.0, 1.0);
+
+    public static final ModConfigSpec.DoubleValue SPOILED_NUTRITION_MULTIPLIER = BUILDER
+            .comment("Multiplier for spoiled food nutrition (hunger restored). 1.0 = vanilla. 0.25 = 25% of fresh nutrition.")
+            .defineInRange("spoiledNutritionMultiplier", 0.25, 0.0, 1.0);
+
+    public static final ModConfigSpec.DoubleValue STALE_SATURATION_MULTIPLIER = BUILDER
+            .comment("Multiplier for stale food saturation. 1.0 = vanilla. 0.5 = half saturation.")
+            .defineInRange("staleSaturationMultiplier", 0.5, 0.0, 1.0);
+
+    public static final ModConfigSpec.DoubleValue SPOILED_SATURATION_MULTIPLIER = BUILDER
+            .comment("Multiplier for spoiled food saturation. 1.0 = vanilla. 0.0 = no saturation.")
+            .defineInRange("spoiledSaturationMultiplier", 0.0, 0.0, 1.0);
+
     public static final ModConfigSpec.DoubleValue RACK_SPOILAGE_RATE = BUILDER
             .comment("Spoilage rate multiplier for food on the drying rack. 0.0 = no spoilage. 1.0 = normal rate.")
             .defineInRange("rackSpoilageRate", 0.0, 0.0, 1.0);
+
+    public static final ModConfigSpec.DoubleValue CAMPFIRE_SPOILAGE_RATE = BUILDER
+            .comment("Spoilage rate multiplier for food on a lit campfire. 0.0 = paused. 1.0 = normal rate.")
+            .defineInRange("campfireSpoilageRate", 0.0, 0.0, 1.0);
 
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

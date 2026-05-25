@@ -17,6 +17,7 @@ import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 
+
 @Mod(MarsFoodSpoilage.MODID)
 public class MarsFoodSpoilage {
     public static final String MODID = "marsfoodspoilage";
@@ -26,10 +27,9 @@ public class MarsFoodSpoilage {
         modContainer.registerConfig(ModConfig.Type.COMMON, MarsSpoilageConfig.SPEC);
         ModDataComponents.register(modBus);
         ModBlocks.register(modBus);
-        SpoilageEvents events = new SpoilageEvents();
-        modBus.addListener(EventPriority.LOWEST, ModifyDefaultComponentsEvent.class, events::makeFoodUnstackable);
+        modBus.addListener(EventPriority.LOWEST, ModifyDefaultComponentsEvent.class, ModBusEvents::makeFoodUnstackable);
         modBus.addListener(this::buildCreativeTabContents);
-        NeoForge.EVENT_BUS.register(events);
+        NeoForge.EVENT_BUS.register(new SpoilageEvents());
         NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> {
             event.addListener(Identifier.fromNamespaceAndPath(MODID, "spoilage_rules_loader"), SpoilageRulesLoader.INSTANCE);
             event.addListener(Identifier.fromNamespaceAndPath(MODID, "drying_recipes_loader"), DryingRecipesLoader.INSTANCE);

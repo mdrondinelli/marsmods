@@ -9,6 +9,7 @@
     "SpoilageClientGuiMixin"
   ],
   "server": [
+    "CampfireBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
