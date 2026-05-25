@@ -20,6 +20,7 @@ Task-oriented notes from this NeoForge project. Use this as a directory: find th
 - [Change block break speed](change-block-break-speed.md)
 - [Make an item harvest a block it normally cannot](make-item-harvest-block.md)
 - [Change block drops](change-block-drops.md)
+- [Make an item furnace fuel](make-item-furnace-fuel.md)
 - [Remove or change recipes](remove-or-change-recipes.md)
 - [Use tags instead of hardcoded lists](use-tags-instead-of-hardcoded-lists.md)
 - [Use mixins only when hooks fail](use-mixins-only-when-hooks-fail.md)
