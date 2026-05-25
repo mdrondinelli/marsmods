@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "marshemp:plant_fiber"
+  },
+  "pattern": [
+    "FF",
+    "FF"
+  ],
+  "result": {
+    "id": "minecraft:string"
+  }
+}

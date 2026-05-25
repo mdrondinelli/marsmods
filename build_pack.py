@@ -18,6 +18,7 @@ DEFAULT_JAVA_HOME = Path("/usr/lib/jvm/java-25-openjdk-amd64")
 
 MOD_PROJECTS = (
     "marsflinttool",
+    "marshemp",
     "marsstoneage",
     "marsfoodspoilage",
     "marsworbloodfx",
