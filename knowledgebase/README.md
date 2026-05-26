@@ -25,6 +25,7 @@ Task-oriented notes from this NeoForge project. Use this as a directory: find th
 - [Use tags instead of hardcoded lists](use-tags-instead-of-hardcoded-lists.md)
 - [Use mixins only when hooks fail](use-mixins-only-when-hooks-fail.md)
 - [Design sleep or time systems](design-sleep-or-time-systems.md)
+- [Make a non-bed block sleepable](make-non-bed-block-sleepable.md)
 - [Design food spoilage](design-food-spoilage.md)
 - [Design cosmetic blood FX](design-cosmetic-blood-fx.md)
 - [Design timed campfires](design-timed-campfires.md)

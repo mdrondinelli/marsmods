@@ -13,6 +13,7 @@
     "CoreMixinsCommonServerLevel",
     "FeaturesMixinsCommonBedBlock",
     "FeaturesMixinsCommonServerPlayer",
+    "LeafLitterSleepMixinsCommonLeafLitterBlock",
     "TimelapseMixinsCommonLivingEntity",
     "TimelapseMixinsCommonMinecraftServer",
     "TimelapseMixinsCommonPlayer",
