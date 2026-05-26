@@ -11,13 +11,23 @@ import net.minecraft.world.item.crafting.RecipePropertySet;
 import net.minecraft.world.item.crafting.RecipeType;
 
 public class KilnMenu extends AbstractFurnaceMenu {
+    private final ContainerData kilnData;
+
     public KilnMenu(int containerId, Inventory inventory) {
-        super(ModMenuTypes.KILN.get(), RecipeType.SMELTING, RecipePropertySet.FURNACE_INPUT,
-                RecipeBookType.FURNACE, containerId, inventory, new SimpleContainer(3), new SimpleContainerData(4));
+        this(containerId, inventory, new SimpleContainer(3), new SimpleContainerData(KilnBlockEntity.DATA_COUNT));
     }
 
     public KilnMenu(int containerId, Inventory inventory, Container container, ContainerData data) {
         super(ModMenuTypes.KILN.get(), RecipeType.SMELTING, RecipePropertySet.FURNACE_INPUT,
                 RecipeBookType.FURNACE, containerId, inventory, container, data);
+        this.kilnData = data;
+    }
+
+    public int getCurrentTemperature() {
+        return this.kilnData.get(KilnBlockEntity.DATA_CURRENT_TEMPERATURE);
+    }
+
+    public int getRequiredTemperature() {
+        return this.kilnData.get(KilnBlockEntity.DATA_REQUIRED_TEMPERATURE);
     }
 }

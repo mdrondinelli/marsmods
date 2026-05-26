@@ -1,0 +1,33 @@
+{
+  "values": [
+    { "ingredient": "minecraft:clay_ball", "melting_point": 600 },
+    { "ingredient": "minecraft:clay", "melting_point": 600 },
+    { "ingredient": "minecraft:cobblestone", "melting_point": 900 },
+    { "ingredient": "minecraft:stone", "melting_point": 900 },
+    { "ingredient": "minecraft:netherrack", "melting_point": 900 },
+    { "ingredient": "#minecraft:logs", "melting_point": 450 },
+    { "ingredient": "minecraft:kelp", "melting_point": 100 },
+    { "ingredient": "minecraft:cactus", "melting_point": 100 },
+    { "ingredient": "minecraft:potato", "melting_point": 100 },
+    { "ingredient": "minecraft:porkchop", "melting_point": 100 },
+    { "ingredient": "minecraft:beef", "melting_point": 100 },
+    { "ingredient": "minecraft:chicken", "melting_point": 100 },
+    { "ingredient": "minecraft:mutton", "melting_point": 100 },
+    { "ingredient": "minecraft:rabbit", "melting_point": 100 },
+    { "ingredient": "minecraft:cod", "melting_point": 100 },
+    { "ingredient": "minecraft:salmon", "melting_point": 100 },
+    { "ingredient": "minecraft:sand", "melting_point": 1700 },
+    { "ingredient": "minecraft:red_sand", "melting_point": 1700 },
+    { "ingredient": "minecraft:raw_copper", "melting_point": 1085 },
+    { "ingredient": "minecraft:copper_ore", "melting_point": 1085 },
+    { "ingredient": "minecraft:deepslate_copper_ore", "melting_point": 1085 },
+    { "ingredient": "minecraft:raw_gold", "melting_point": 1064 },
+    { "ingredient": "minecraft:gold_ore", "melting_point": 1064 },
+    { "ingredient": "minecraft:deepslate_gold_ore", "melting_point": 1064 },
+    { "ingredient": "minecraft:nether_gold_ore", "melting_point": 1064 },
+    { "ingredient": "minecraft:raw_iron", "melting_point": 1538 },
+    { "ingredient": "minecraft:iron_ore", "melting_point": 1538 },
+    { "ingredient": "minecraft:deepslate_iron_ore", "melting_point": 1538 },
+    { "ingredient": "minecraft:ancient_debris", "melting_point": 1500 }
+  ]
+}

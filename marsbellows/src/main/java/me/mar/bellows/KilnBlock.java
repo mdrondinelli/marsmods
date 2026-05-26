@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -116,8 +115,7 @@ public class KilnBlock extends BaseEntityBlock {
             Level level, BlockState state, BlockEntityType<T> type) {
         return level instanceof ServerLevel serverLevel
                 ? createTickerHelper(type, ModBlockEntities.KILN.get(),
-                        (innerLevel, pos, blockState, entity) ->
-                                AbstractFurnaceBlockEntity.serverTick(serverLevel, pos, blockState, entity))
+                        (innerLevel, pos, blockState, entity) -> KilnBlockEntity.serverTick(serverLevel, pos, blockState, entity))
                 : null;
     }
 

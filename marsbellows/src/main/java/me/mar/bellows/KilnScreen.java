@@ -2,6 +2,7 @@ package me.mar.bellows;
 
 import java.util.List;
 
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.SearchRecipeBookCategory;
@@ -27,5 +28,18 @@ public class KilnScreen extends AbstractFurnaceScreen<KilnMenu> {
 
     public KilnScreen(KilnMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title, FILTER_NAME, TEXTURE, LIT_PROGRESS_SPRITE, BURN_PROGRESS_SPRITE, TABS);
+    }
+
+    @Override
+    protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        super.extractLabels(graphics, mouseX, mouseY);
+        int required = this.menu.getRequiredTemperature();
+        String text = required == Integer.MAX_VALUE
+                ? this.menu.getCurrentTemperature() + "/? C"
+                : required > 0
+                ? this.menu.getCurrentTemperature() + "/" + required + " C"
+                : this.menu.getCurrentTemperature() + " C";
+        int color = required > this.menu.getCurrentTemperature() ? 0xAA3333 : -12566464;
+        graphics.text(this.font, text, 104, 60, color, false);
     }
 }
