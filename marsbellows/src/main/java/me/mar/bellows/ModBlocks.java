@@ -12,7 +12,9 @@ public final class ModBlocks {
     public static final DeferredHolder<Block, KilnBlock> KILN = BLOCKS.registerBlock(
             KilnBlock.NAME,
             KilnBlock::new,
-            () -> Block.Properties.ofFullCopy(Blocks.BRICKS).noOcclusion());
+            () -> Block.Properties.ofFullCopy(Blocks.BRICKS)
+                    .noOcclusion()
+                    .lightLevel(state -> state.getValue(KilnBlock.LIT) ? 13 : 0));
 
     private ModBlocks() {
     }

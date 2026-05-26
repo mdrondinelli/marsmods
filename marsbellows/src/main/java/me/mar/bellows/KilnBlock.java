@@ -43,7 +43,10 @@ public class KilnBlock extends BaseEntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
-    private static final VoxelShape SHAPE = Block.box(2, 0, 0, 14, 16, 14);
+    private static final VoxelShape NORTH_SHAPE = Block.box(2, 0, 0, 14, 16, 14);
+    private static final VoxelShape EAST_SHAPE = Block.box(2, 0, 2, 16, 16, 14);
+    private static final VoxelShape SOUTH_SHAPE = Block.box(2, 0, 2, 14, 16, 16);
+    private static final VoxelShape WEST_SHAPE = Block.box(0, 0, 2, 14, 16, 14);
 
     public KilnBlock(Properties properties) {
         super(properties);
@@ -64,7 +67,12 @@ public class KilnBlock extends BaseEntityBlock {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        return switch (state.getValue(FACING)) {
+            case EAST -> EAST_SHAPE;
+            case SOUTH -> SOUTH_SHAPE;
+            case WEST -> WEST_SHAPE;
+            default -> NORTH_SHAPE;
+        };
     }
 
     @Override
