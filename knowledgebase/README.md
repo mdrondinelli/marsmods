@@ -27,6 +27,7 @@ Task-oriented notes from this NeoForge project. Use this as a directory: find th
 - [Design sleep or time systems](design-sleep-or-time-systems.md)
 - [Make a non-bed block sleepable](make-non-bed-block-sleepable.md)
 - [Design food spoilage](design-food-spoilage.md)
+- [Add wild crop generation](add-wild-crop-generation.md)
 - [Design cosmetic blood FX](design-cosmetic-blood-fx.md)
 - [Design timed campfires](design-timed-campfires.md)
 - [Port an Architectury mod to NeoForge-only](port-architectury-mod-to-neoforge.md)

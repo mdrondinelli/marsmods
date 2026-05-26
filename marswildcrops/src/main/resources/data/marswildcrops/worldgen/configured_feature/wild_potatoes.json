@@ -1,0 +1,14 @@
+{
+  "type": "marswildcrops:wild_crop_patch",
+  "config": {
+    "to_place": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "marswildcrops:wild_potatoes",
+        "Properties": {
+          "age": "7"
+        }
+      }
+    }
+  }
+}
