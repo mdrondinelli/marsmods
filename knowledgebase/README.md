@@ -13,6 +13,8 @@ Task-oriented notes from this NeoForge project. Use this as a directory: find th
 ## I Need To...
 
 - [Set up and run builds](set-up-and-run-builds.md)
+- [Add a craftable item](add-craftable-item.md)
+- [Add a facing supported block](add-facing-supported-block.md)
 - [Design modpack-friendly systems](design-modpack-friendly-systems.md)
 - [Add registries and generated data](add-registries-and-generated-data.md)
 - [Add server-authoritative gameplay](add-server-authoritative-gameplay.md)

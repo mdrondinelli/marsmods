@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": "minecraft:leather",
+    "S": "minecraft:stick",
+    "W": "#minecraft:wooden_slabs"
+  },
+  "pattern": [
+    "SW ",
+    " LW",
+    "SW "
+  ],
+  "result": {
+    "id": "marsbellows:bellows"
+  }
+}

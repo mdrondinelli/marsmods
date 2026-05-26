@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "marsbellows:block/kiln", "y": 0 },
+    "facing=east": { "model": "marsbellows:block/kiln", "y": 90 },
+    "facing=south": { "model": "marsbellows:block/kiln", "y": 180 },
+    "facing=west": { "model": "marsbellows:block/kiln", "y": 270 }
+  }
+}

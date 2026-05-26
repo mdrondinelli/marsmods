@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:brick",
+    "C": "minecraft:campfire"
+  },
+  "pattern": [
+    "B B",
+    "BBB",
+    "BCB"
+  ],
+  "result": {
+    "id": "marsbellows:kiln"
+  }
+}
