@@ -8,14 +8,12 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.EventPriority;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 
 
 @Mod(MarsFoodSpoilage.MODID)
@@ -27,7 +25,6 @@ public class MarsFoodSpoilage {
         modContainer.registerConfig(ModConfig.Type.COMMON, MarsSpoilageConfig.SPEC);
         ModDataComponents.register(modBus);
         ModBlocks.register(modBus);
-        modBus.addListener(EventPriority.LOWEST, ModifyDefaultComponentsEvent.class, ModBusEvents::makeFoodUnstackable);
         modBus.addListener(this::buildCreativeTabContents);
         NeoForge.EVENT_BUS.register(new SpoilageEvents());
         NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> {

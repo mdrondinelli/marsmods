@@ -14,8 +14,8 @@ public final class ModTags {
         public static final TagKey<Item> DRYABLE = TagKey.create(
                 Registries.ITEM,
                 Identifier.fromNamespaceAndPath(MarsFoodSpoilage.MODID, "dryable"));
-        public static final TagKey<Item> DOES_NOT_SPOIL = TagKey.create(
+        public static final TagKey<Item> SPOILS = TagKey.create(
                 Registries.ITEM,
-                Identifier.fromNamespaceAndPath(MarsFoodSpoilage.MODID, "does_not_spoil"));
+                Identifier.fromNamespaceAndPath(MarsFoodSpoilage.MODID, "spoils"));
     }
 }

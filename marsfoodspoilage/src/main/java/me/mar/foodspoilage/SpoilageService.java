@@ -16,9 +16,9 @@ import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.component.ItemContainerContents;
 
 public final class SpoilageService {
-    private static final TagKey<Item> DOES_NOT_SPOIL = TagKey.create(
+    private static final TagKey<Item> SPOILS = TagKey.create(
             Registries.ITEM,
-            Identifier.fromNamespaceAndPath(MarsFoodSpoilage.MODID, "does_not_spoil"));
+            Identifier.fromNamespaceAndPath(MarsFoodSpoilage.MODID, "spoils"));
 
     private SpoilageService() {
     }
@@ -43,7 +43,7 @@ public final class SpoilageService {
 
     @Nullable
     public static SpoilageProfile profileFor(ItemStack stack) {
-        if (stack.isEmpty() || stack.is(DOES_NOT_SPOIL)) {
+        if (stack.isEmpty() || !stack.is(SPOILS)) {
             return null;
         }
         SpoilageProfile profile = SpoilageRulesLoader.INSTANCE.profileFor(stack);
