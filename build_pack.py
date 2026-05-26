@@ -26,6 +26,7 @@ MOD_PROJECTS = (
     "marstorches",
     "marssleepingoverhaul",
     "marswildcrops",
+    "marsoriginguard",
 )
 
 NON_PACK_JAR_SUFFIXES = ("-sources.jar", "-javadoc.jar", "-dev.jar", "-plain.jar")
