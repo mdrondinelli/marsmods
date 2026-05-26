@@ -12,8 +12,8 @@ public class HempEvents {
     private static final int PLANT_FIBER_DROP_CHANCE = 8;
 
     @SubscribeEvent
-    public void addPlantFiberFromGrass(BlockDropsEvent event) {
-        if (!(event.getBreaker() instanceof Player) || !isFiberGrass(event)) {
+    public void addPlantFiberDrops(BlockDropsEvent event) {
+        if (!(event.getBreaker() instanceof Player) || !isFiberSource(event)) {
             return;
         }
 
@@ -30,7 +30,11 @@ public class HempEvents {
                 new ItemStack(ModItems.PLANT_FIBER.get())));
     }
 
-    private static boolean isFiberGrass(BlockDropsEvent event) {
-        return event.getState().is(Blocks.SHORT_GRASS) || event.getState().is(Blocks.TALL_GRASS);
+    private static boolean isFiberSource(BlockDropsEvent event) {
+        return event.getState().is(Blocks.SHORT_GRASS)
+                || event.getState().is(Blocks.TALL_GRASS)
+                || event.getState().is(Blocks.SHORT_DRY_GRASS)
+                || event.getState().is(Blocks.TALL_DRY_GRASS)
+                || event.getState().is(Blocks.VINE);
     }
 }
