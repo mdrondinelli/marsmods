@@ -64,13 +64,13 @@ public final class SpoilageService {
      * before the new rate takes effect. Without this, swapping rate retroactively reinterprets
      * elapsed time at the new rate.
      */
-    public static void applyRate(ServerLevel level, ItemStack stack, float newRate) {
+    public static boolean applyRate(ServerLevel level, ItemStack stack, float newRate) {
         if (stack.isEmpty()) {
-            return;
+            return false;
         }
         SpoilageProfile profile = profileFor(stack);
         if (profile == null) {
-            return;
+            return false;
         }
         long now = level.getGameTime();
         FreshnessData existing = stack.get(ModDataComponents.FRESHNESS.get());
@@ -79,12 +79,12 @@ public final class SpoilageService {
             stack.set(ModDataComponents.FRESHNESS.get(), created);
             updateConsumableForStateChange(stack, SpoilageState.FRESH, created.state());
             updateFoodForStateChange(stack, SpoilageState.FRESH, created.state());
-            return;
+            return true;
         }
         FreshnessData settled = existing.updatedTo(now);
         if (settled.spoilageRate() == newRate
                 && settled.remainingFreshTicks() == existing.remainingFreshTicks()) {
-            return;
+            return false;
         }
         SpoilageState oldState = existing.state();
         SpoilageState newState = settled.state();
@@ -94,6 +94,7 @@ public final class SpoilageService {
             updateConsumableForStateChange(stack, oldState, newState);
             updateFoodForStateChange(stack, oldState, newState);
         }
+        return true;
     }
 
     private static boolean touchOwnFreshness(ServerLevel level, ItemStack stack) {

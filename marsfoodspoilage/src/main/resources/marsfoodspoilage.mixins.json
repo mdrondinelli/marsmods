@@ -4,13 +4,13 @@
   "package": "me.mar.foodspoilage.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "CampfireBlockEntityMixin",
     "ItemStackMixin"
   ],
   "client": [
     "SpoilageClientGuiMixin"
   ],
   "server": [
-    "CampfireBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

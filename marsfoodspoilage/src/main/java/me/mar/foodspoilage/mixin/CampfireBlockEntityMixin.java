@@ -29,8 +29,13 @@ public abstract class CampfireBlockEntityMixin {
             CampfireBlockEntity be, RecipeManager.CachedCheck<SingleRecipeInput, CampfireCookingRecipe> check,
             CallbackInfo ci) {
         float rate = MarsSpoilageConfig.CAMPFIRE_SPOILAGE_RATE.get().floatValue();
+        boolean changed = false;
         for (ItemStack stack : be.getItems()) {
-            SpoilageService.applyRate(level, stack, rate);
+            changed |= SpoilageService.applyRate(level, stack, rate);
+        }
+        if (changed) {
+            be.setChanged();
+            level.sendBlockUpdated(pos, state, state, 3);
         }
     }
 
@@ -42,8 +47,13 @@ public abstract class CampfireBlockEntityMixin {
         if (!(level instanceof ServerLevel sl)) {
             return;
         }
+        boolean changed = false;
         for (ItemStack stack : be.getItems()) {
-            SpoilageService.applyRate(sl, stack, 1.0f);
+            changed |= SpoilageService.applyRate(sl, stack, 1.0f);
+        }
+        if (changed) {
+            be.setChanged();
+            sl.sendBlockUpdated(pos, state, state, 3);
         }
     }
 
