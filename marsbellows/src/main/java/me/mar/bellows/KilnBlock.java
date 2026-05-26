@@ -156,5 +156,11 @@ public class KilnBlock extends BaseEntityBlock {
         double dz = axis == Direction.Axis.Z ? direction.getStepZ() * offset : sideSpread;
         level.addParticle(ParticleTypes.SMOKE, x + dx, y + dy, z + dz, 0.0, 0.0, 0.0);
         level.addParticle(ParticleTypes.FLAME, x + dx, y + dy, z + dz, 0.0, 0.0, 0.0);
+
+        if (random.nextDouble() < 0.35) {
+            double topX = x + random.nextDouble() * 0.4 - 0.2;
+            double topZ = z + random.nextDouble() * 0.4 - 0.2;
+            level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, topX, pos.getY() + 1.05, topZ, 0.0, 0.04, 0.0);
+        }
     }
 }
