@@ -1,4 +1,5 @@
 {
   "item.marsbellows.bellows": "Bellows",
-  "block.marsbellows.kiln": "Kiln"
+  "block.marsbellows.kiln": "Kiln",
+  "container.marsbellows.kiln": "Kiln"
 }

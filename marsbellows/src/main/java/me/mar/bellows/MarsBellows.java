@@ -17,7 +17,9 @@ public class MarsBellows {
 
     public MarsBellows(IEventBus modBus) {
         ModBlocks.register(modBus);
+        ModBlockEntities.register(modBus);
         ModItems.register(modBus);
+        ModMenuTypes.register(modBus);
         modBus.addListener(this::buildCreativeTabContents);
     }
 

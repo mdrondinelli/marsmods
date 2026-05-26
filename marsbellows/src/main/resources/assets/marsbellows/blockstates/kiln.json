@@ -1,8 +1,12 @@
 {
   "variants": {
-    "facing=north": { "model": "marsbellows:block/kiln", "y": 0 },
-    "facing=east": { "model": "marsbellows:block/kiln", "y": 90 },
-    "facing=south": { "model": "marsbellows:block/kiln", "y": 180 },
-    "facing=west": { "model": "marsbellows:block/kiln", "y": 270 }
+    "facing=north,lit=false": { "model": "marsbellows:block/kiln", "y": 0 },
+    "facing=east,lit=false": { "model": "marsbellows:block/kiln", "y": 90 },
+    "facing=south,lit=false": { "model": "marsbellows:block/kiln", "y": 180 },
+    "facing=west,lit=false": { "model": "marsbellows:block/kiln", "y": 270 },
+    "facing=north,lit=true": { "model": "marsbellows:block/kiln", "y": 0 },
+    "facing=east,lit=true": { "model": "marsbellows:block/kiln", "y": 90 },
+    "facing=south,lit=true": { "model": "marsbellows:block/kiln", "y": 180 },
+    "facing=west,lit=true": { "model": "marsbellows:block/kiln", "y": 270 }
   }
 }
