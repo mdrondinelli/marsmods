@@ -23,6 +23,7 @@ public class MarsBellows {
         ModBlockEntities.register(modBus);
         ModItems.register(modBus);
         ModMenuTypes.register(modBus);
+        ModSoundEvents.register(modBus);
         modBus.addListener(this::buildCreativeTabContents);
         NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event ->
                 event.addListener(Identifier.fromNamespaceAndPath(MODID, "melting_points"),

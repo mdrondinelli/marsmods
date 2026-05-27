@@ -33,9 +33,11 @@ import org.jspecify.annotations.Nullable;
 public class KilnBlockEntity extends BaseContainerBlockEntity
         implements WorldlyContainer, StackedContentsCompatible {
     public static final int BASE_TEMPERATURE = 1100;
-    public static final int BELLOWS_BOOST_TEMPERATURE = 600;
-    public static final int BELLOWS_BOOST_TICKS = 120;
-    private static final int BELLOWS_SOUND_INTERVAL_TICKS = 20;
+    public static final int MAX_BELLOWS_BOOST_TEMPERATURE = 1100;
+    public static final int BELLOWS_BOOST_PER_USE = 400;
+    public static final int BELLOWS_BOOST_DECAY_PER_TICK = 2;
+    public static final int HOT_TEMPERATURE = 1538;
+    private static final int HOT_SOUND_INTERVAL_TICKS = 20;
     public static final int DATA_LIT_TIME = 0;
     public static final int DATA_LIT_DURATION = 1;
     public static final int DATA_COOKING_PROGRESS = 2;
@@ -56,7 +58,8 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
     private int cookingTimer;
     private int cookingTotalTime;
     private int requiredTemperature;
-    private int bellowsBoostTicks;
+    private int bellowsBoostTemperature;
+    private int hotSoundTimer;
     private final RecipeManager.CachedCheck<SingleRecipeInput, ? extends AbstractCookingRecipe> quickCheck =
             RecipeManager.createCheck(RecipeType.SMELTING);
 
@@ -103,12 +106,9 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
         if (kiln.litTimeRemaining > 0) {
             kiln.litTimeRemaining--;
         }
-        if (kiln.bellowsBoostTicks > 0) {
-            kiln.bellowsBoostTicks--;
-            int elapsedBoostTicks = BELLOWS_BOOST_TICKS - kiln.bellowsBoostTicks;
-            if (elapsedBoostTicks % BELLOWS_SOUND_INTERVAL_TICKS == 1) {
-                level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.7F, 1.2F);
-            }
+        boolean wasHot = kiln.isHot();
+        if (kiln.bellowsBoostTemperature > 0) {
+            kiln.bellowsBoostTemperature = Math.max(0, kiln.bellowsBoostTemperature - BELLOWS_BOOST_DECAY_PER_TICK);
         }
 
         ItemStack fuel = kiln.items.get(SLOT_FUEL);
@@ -155,9 +155,26 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
         }
 
         boolean isLit = kiln.isLit();
+        if (!isLit && kiln.bellowsBoostTemperature > 0) {
+            kiln.bellowsBoostTemperature = 0;
+        }
         if (wasLit != isLit) {
             changed = true;
             level.setBlock(pos, state.setValue(KilnBlock.LIT, isLit), 3);
+        }
+        boolean isHot = kiln.isHot();
+        if (wasHot != isHot) {
+            changed = true;
+            level.setBlock(pos, level.getBlockState(pos).setValue(KilnBlock.BOOSTED, isHot), 3);
+        }
+        if (isHot) {
+            kiln.hotSoundTimer++;
+            if (kiln.hotSoundTimer >= HOT_SOUND_INTERVAL_TICKS) {
+                kiln.hotSoundTimer = 0;
+                level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.7F, 1.2F);
+            }
+        } else {
+            kiln.hotSoundTimer = 0;
         }
 
         if (changed) {
@@ -214,15 +231,21 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
     }
 
     private int currentTemperature() {
-        return BASE_TEMPERATURE + (this.bellowsBoostTicks > 0 ? BELLOWS_BOOST_TEMPERATURE : 0);
+        return BASE_TEMPERATURE + this.bellowsBoostTemperature;
+    }
+
+    private boolean isHot() {
+        return this.currentTemperature() >= HOT_TEMPERATURE;
     }
 
     public boolean canApplyBellowsBoost() {
-        return this.isLit();
+        return this.isLit() && this.bellowsBoostTemperature < MAX_BELLOWS_BOOST_TEMPERATURE;
     }
 
     public void applyBellowsBoost() {
-        this.bellowsBoostTicks = BELLOWS_BOOST_TICKS;
+        this.bellowsBoostTemperature = Math.min(
+                MAX_BELLOWS_BOOST_TEMPERATURE,
+                this.bellowsBoostTemperature + BELLOWS_BOOST_PER_USE);
         this.setChanged();
     }
 
@@ -236,7 +259,7 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
         this.litTimeRemaining = input.getIntOr("lit_time_remaining", 0);
         this.litTotalTime = input.getIntOr("lit_total_time", 0);
         this.requiredTemperature = input.getIntOr("required_temperature", 0);
-        this.bellowsBoostTicks = input.getIntOr("bellows_boost_ticks", 0);
+        this.bellowsBoostTemperature = input.getIntOr("bellows_boost_temperature", 0);
     }
 
     @Override
@@ -247,7 +270,7 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
         output.putInt("lit_time_remaining", this.litTimeRemaining);
         output.putInt("lit_total_time", this.litTotalTime);
         output.putInt("required_temperature", this.requiredTemperature);
-        output.putInt("bellows_boost_ticks", this.bellowsBoostTicks);
+        output.putInt("bellows_boost_temperature", this.bellowsBoostTemperature);
         ContainerHelper.saveAllItems(output, this.items);
     }
 

@@ -1,12 +1,20 @@
 {
   "variants": {
-    "facing=north,lit=false": { "model": "marsbellows:block/kiln", "y": 0 },
-    "facing=east,lit=false": { "model": "marsbellows:block/kiln", "y": 90 },
-    "facing=south,lit=false": { "model": "marsbellows:block/kiln", "y": 180 },
-    "facing=west,lit=false": { "model": "marsbellows:block/kiln", "y": 270 },
-    "facing=north,lit=true": { "model": "marsbellows:block/kiln", "y": 0 },
-    "facing=east,lit=true": { "model": "marsbellows:block/kiln", "y": 90 },
-    "facing=south,lit=true": { "model": "marsbellows:block/kiln", "y": 180 },
-    "facing=west,lit=true": { "model": "marsbellows:block/kiln", "y": 270 }
+    "boosted=false,facing=north,lit=false": { "model": "marsbellows:block/kiln", "y": 0 },
+    "boosted=false,facing=east,lit=false": { "model": "marsbellows:block/kiln", "y": 90 },
+    "boosted=false,facing=south,lit=false": { "model": "marsbellows:block/kiln", "y": 180 },
+    "boosted=false,facing=west,lit=false": { "model": "marsbellows:block/kiln", "y": 270 },
+    "boosted=false,facing=north,lit=true": { "model": "marsbellows:block/kiln", "y": 0 },
+    "boosted=false,facing=east,lit=true": { "model": "marsbellows:block/kiln", "y": 90 },
+    "boosted=false,facing=south,lit=true": { "model": "marsbellows:block/kiln", "y": 180 },
+    "boosted=false,facing=west,lit=true": { "model": "marsbellows:block/kiln", "y": 270 },
+    "boosted=true,facing=north,lit=false": { "model": "marsbellows:block/kiln", "y": 0 },
+    "boosted=true,facing=east,lit=false": { "model": "marsbellows:block/kiln", "y": 90 },
+    "boosted=true,facing=south,lit=false": { "model": "marsbellows:block/kiln", "y": 180 },
+    "boosted=true,facing=west,lit=false": { "model": "marsbellows:block/kiln", "y": 270 },
+    "boosted=true,facing=north,lit=true": { "model": "marsbellows:block/kiln", "y": 0 },
+    "boosted=true,facing=east,lit=true": { "model": "marsbellows:block/kiln", "y": 90 },
+    "boosted=true,facing=south,lit=true": { "model": "marsbellows:block/kiln", "y": 180 },
+    "boosted=true,facing=west,lit=true": { "model": "marsbellows:block/kiln", "y": 270 }
   }
 }

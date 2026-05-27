@@ -1,6 +1,7 @@
 package me.mar.bellows;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -10,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class BellowsItem extends Item {
-    private static final int COOLDOWN_TICKS = 100;
+    private static final int COOLDOWN_TICKS = 15;
 
     public BellowsItem(Properties properties) {
         super(properties);
@@ -32,6 +33,7 @@ public class BellowsItem extends Item {
 
         if (level instanceof ServerLevel serverLevel) {
             kiln.applyBellowsBoost();
+            serverLevel.playSound(null, context.getClickedPos(), ModSoundEvents.BELLOWS_USE.get(), SoundSource.BLOCKS, 0.9F, 1.0F);
             if (player != null) {
                 player.getCooldowns().addCooldown(stack, COOLDOWN_TICKS);
                 stack.hurtAndBreak(1, serverLevel, player, brokenItem -> player.onEquippedItemBroken(brokenItem, context.getHand().asEquipmentSlot()));

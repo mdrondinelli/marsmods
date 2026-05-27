@@ -17,6 +17,7 @@ EXTERNAL_DIR = REPO_ROOT / "external"
 DEFAULT_JAVA_HOME = Path("/usr/lib/jvm/java-25-openjdk-amd64")
 
 MOD_PROJECTS = (
+    "marsbellows",
     "marsflinttool",
     "marshemp",
     "marsstoneage",

@@ -14,7 +14,7 @@ public final class ModItems {
             ITEMS.registerItem("bellows", BellowsItem::new, () -> new Item.Properties().durability(64).useCooldown(5.0F));
 
     public static final DeferredHolder<Item, BlockItem> KILN =
-            ITEMS.registerItem(KilnBlock.NAME, props -> new BlockItem(ModBlocks.KILN.get(), props));
+            ITEMS.registerItem(KilnBlock.NAME, props -> new BlockItem(ModBlocks.KILN.get(), props.useBlockDescriptionPrefix()));
 
     private ModItems() {
     }

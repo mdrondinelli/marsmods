@@ -41,6 +41,7 @@ public class KilnBlock extends BaseEntityBlock {
     public static final String NAME = "kiln";
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
+    public static final BooleanProperty BOOSTED = BooleanProperty.create("boosted");
 
     private static final VoxelShape NORTH_SHAPE = Block.box(2, 0, 0, 14, 16, 14);
     private static final VoxelShape EAST_SHAPE = Block.box(2, 0, 2, 16, 16, 14);
@@ -51,7 +52,8 @@ public class KilnBlock extends BaseEntityBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(LIT, false));
+                .setValue(LIT, false)
+                .setValue(BOOSTED, false));
     }
 
     @Override
@@ -61,7 +63,7 @@ public class KilnBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, LIT);
+        builder.add(FACING, LIT, BOOSTED);
     }
 
     @Override
@@ -78,7 +80,8 @@ public class KilnBlock extends BaseEntityBlock {
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState()
                 .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                .setValue(LIT, false);
+                .setValue(LIT, false)
+                .setValue(BOOSTED, false);
     }
 
     @Override
@@ -153,12 +156,21 @@ public class KilnBlock extends BaseEntityBlock {
         double dy = random.nextDouble() * 6.0 / 16.0;
         double dz = axis == Direction.Axis.Z ? direction.getStepZ() * offset : sideSpread;
         level.addParticle(ParticleTypes.SMOKE, x + dx, y + dy, z + dz, 0.0, 0.0, 0.0);
+        if (random.nextDouble() < 0.35) {
+            level.addParticle(ParticleTypes.SMOKE, x + dx * 0.9, y + 0.05, z + dz * 0.9, 0.0, 0.0, 0.0);
+        }
         level.addParticle(ParticleTypes.FLAME, x + dx, y + dy, z + dz, 0.0, 0.0, 0.0);
 
-        if (random.nextDouble() < 0.35) {
-            double topX = x + random.nextDouble() * 0.4 - 0.2;
-            double topZ = z + random.nextDouble() * 0.4 - 0.2;
-            level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, topX, pos.getY() + 1.05, topZ, 0.0, 0.04, 0.0);
+        int topSmokeCount = state.getValue(BOOSTED) ? 3 : 1;
+        double topSmokeChance = state.getValue(BOOSTED) ? 0.8 : 0.5;
+        for (int i = 0; i < topSmokeCount; i++) {
+            if (random.nextDouble() < topSmokeChance) {
+                double spread = state.getValue(BOOSTED) ? 0.6 : 0.45;
+                double topX = x + random.nextDouble() * spread - spread / 2.0;
+                double topZ = z + random.nextDouble() * spread - spread / 2.0;
+                double velocityY = state.getValue(BOOSTED) ? 0.07 : 0.04;
+                level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, topX, pos.getY() + 1.05, topZ, 0.0, velocityY, 0.0);
+            }
         }
     }
 }

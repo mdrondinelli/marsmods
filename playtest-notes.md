@@ -1,8 +1,5 @@
 - Drying rack should not work when raining
-- No wild potatoes or carrots
-- Sleeping is a little buggy
-- Everything should drop bones
-- Check if food spoilage is working in furnaces
+- Everything should drop bones?
 - Food shouldn't spoil on campfires
 - Spoiled food should give less hunger and saturation
 - Spoiled food should give less nutritional value for the nutritional balanace mod.
