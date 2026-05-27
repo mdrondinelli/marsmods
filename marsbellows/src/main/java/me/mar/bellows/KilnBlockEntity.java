@@ -5,6 +5,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
@@ -33,6 +35,7 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
     public static final int BASE_TEMPERATURE = 1100;
     public static final int BELLOWS_BOOST_TEMPERATURE = 600;
     public static final int BELLOWS_BOOST_TICKS = 120;
+    private static final int BELLOWS_SOUND_INTERVAL_TICKS = 20;
     public static final int DATA_LIT_TIME = 0;
     public static final int DATA_LIT_DURATION = 1;
     public static final int DATA_COOKING_PROGRESS = 2;
@@ -102,6 +105,10 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
         }
         if (kiln.bellowsBoostTicks > 0) {
             kiln.bellowsBoostTicks--;
+            int elapsedBoostTicks = BELLOWS_BOOST_TICKS - kiln.bellowsBoostTicks;
+            if (elapsedBoostTicks % BELLOWS_SOUND_INTERVAL_TICKS == 1) {
+                level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.7F, 1.2F);
+            }
         }
 
         ItemStack fuel = kiln.items.get(SLOT_FUEL);
