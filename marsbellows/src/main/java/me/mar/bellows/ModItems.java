@@ -11,7 +11,7 @@ public final class ModItems {
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MarsBellows.MODID);
 
     public static final DeferredItem<Item> BELLOWS =
-            ITEMS.registerItem("bellows", Item::new, Item.Properties::new);
+            ITEMS.registerItem("bellows", BellowsItem::new, () -> new Item.Properties().durability(64).useCooldown(5.0F));
 
     public static final DeferredHolder<Item, BlockItem> KILN =
             ITEMS.registerItem(KilnBlock.NAME, props -> new BlockItem(ModBlocks.KILN.get(), props));

@@ -28,6 +28,6 @@
     { "ingredient": "minecraft:raw_iron", "melting_point": 1538 },
     { "ingredient": "minecraft:iron_ore", "melting_point": 1538 },
     { "ingredient": "minecraft:deepslate_iron_ore", "melting_point": 1538 },
-    { "ingredient": "minecraft:ancient_debris", "melting_point": 1500 }
+    { "ingredient": "minecraft:ancient_debris", "melting_point": 2500 }
   ]
 }
