@@ -16,6 +16,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class KilnScreen extends AbstractFurnaceScreen<KilnMenu> {
+    private static final int AMBIENT_TEMPERATURE = 22;
     private static final Identifier LIT_PROGRESS_SPRITE = Identifier.withDefaultNamespace("container/furnace/lit_progress");
     private static final Identifier BURN_PROGRESS_SPRITE = Identifier.withDefaultNamespace("container/furnace/burn_progress");
     private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/furnace.png");
@@ -32,14 +33,20 @@ public class KilnScreen extends AbstractFurnaceScreen<KilnMenu> {
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        super.extractLabels(graphics, mouseX, mouseY);
+        String titleText = this.title.getString() + " (" + temperatureText() + ")";
+        graphics.text(this.font, titleText, (this.imageWidth - this.font.width(titleText)) / 2, this.titleLabelY,
+                -12566464, false);
+        graphics.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY,
+                -12566464, false);
+    }
+
+    private String temperatureText() {
+        int current = this.menu.isLit() ? this.menu.getCurrentTemperature() : AMBIENT_TEMPERATURE;
         int required = this.menu.getRequiredTemperature();
-        String text = required == Integer.MAX_VALUE
-                ? this.menu.getCurrentTemperature() + "/? C"
-                : required > 0
-                ? this.menu.getCurrentTemperature() + "/" + required + " C"
-                : this.menu.getCurrentTemperature() + " C";
-        int color = required > this.menu.getCurrentTemperature() ? 0xAA3333 : -12566464;
-        graphics.text(this.font, text, 104, 60, color, false);
+        if (this.menu.getSlot(0).hasItem()) {
+            String requiredText = required == Integer.MAX_VALUE ? "?" : Integer.toString(required);
+            return current + "C/" + requiredText + "C";
+        }
+        return current + "C";
     }
 }
