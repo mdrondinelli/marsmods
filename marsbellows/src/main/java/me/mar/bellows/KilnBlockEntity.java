@@ -34,7 +34,7 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
         implements WorldlyContainer, StackedContentsCompatible {
     public static final int BASE_TEMPERATURE = 1100;
     public static final int MAX_BELLOWS_BOOST_TEMPERATURE = 1100;
-    public static final int BELLOWS_BOOST_PER_USE = 400;
+    public static final int BELLOWS_BOOST_PER_USE = 300;
     public static final int BELLOWS_BOOST_DECAY_PER_TICK = 2;
     public static final int HOT_TEMPERATURE = 1538;
     private static final int HOT_SOUND_INTERVAL_TICKS = 20;
