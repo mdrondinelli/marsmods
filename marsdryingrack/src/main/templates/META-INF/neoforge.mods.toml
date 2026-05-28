@@ -6,7 +6,8 @@ version="${mod_version}"
 displayName="${mod_name}"
 authors="Mar"
 description='''
-Adds server-authoritative food freshness and spoilage metadata.
+Drying rack block with data-driven recipes. Any mod can ship drying recipes
+under data/<ns>/drying_recipes/*.json.
 '''
 
 [[dependencies.${mod_id}]]
@@ -22,13 +23,3 @@ type="required"
 versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
-
-[[dependencies.${mod_id}]]
-modId="marsdryingrack"
-type="required"
-versionRange="[1.0.0,)"
-ordering="AFTER"
-side="BOTH"
-
-[[mixins]]
-config = "marsfoodspoilage.mixins.json"

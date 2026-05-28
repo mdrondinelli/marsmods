@@ -4,7 +4,6 @@ import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
 
 @EventBusSubscriber(modid = MarsFoodSpoilage.MODID, value = Dist.CLIENT)
@@ -14,10 +13,5 @@ public class SpoilageClientEvents {
         event.register(
                 Identifier.fromNamespaceAndPath(MarsFoodSpoilage.MODID, "freshness_state"),
                 FreshnessStateProperty.TYPE);
-    }
-
-    @SubscribeEvent
-    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModBlockEntities.DRYING_RACK.get(), DryingRackBlockEntityRenderer::new);
     }
 }

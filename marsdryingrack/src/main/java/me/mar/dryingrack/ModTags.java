@@ -1,4 +1,4 @@
-package me.mar.foodspoilage;
+package me.mar.dryingrack;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -11,8 +11,8 @@ public final class ModTags {
     public static final class Items {
         private Items() {}
 
-        public static final TagKey<Item> SPOILS = TagKey.create(
+        public static final TagKey<Item> DRYABLE = TagKey.create(
                 Registries.ITEM,
-                Identifier.fromNamespaceAndPath(MarsFoodSpoilage.MODID, "spoils"));
+                Identifier.fromNamespaceAndPath(MarsDryingRack.MODID, "dryable"));
     }
 }

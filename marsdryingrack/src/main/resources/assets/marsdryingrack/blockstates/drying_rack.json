@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "half=lower,facing=north": { "model": "marsdryingrack:block/drying_rack", "y": 0   },
+    "half=lower,facing=east":  { "model": "marsdryingrack:block/drying_rack", "y": 90  },
+    "half=lower,facing=south": { "model": "marsdryingrack:block/drying_rack", "y": 180 },
+    "half=lower,facing=west":  { "model": "marsdryingrack:block/drying_rack", "y": 270 },
+    "half=upper,facing=north": { "model": "marsdryingrack:block/drying_rack_top" },
+    "half=upper,facing=east":  { "model": "marsdryingrack:block/drying_rack_top" },
+    "half=upper,facing=south": { "model": "marsdryingrack:block/drying_rack_top" },
+    "half=upper,facing=west":  { "model": "marsdryingrack:block/drying_rack_top" }
+  }
+}

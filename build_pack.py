@@ -20,6 +20,7 @@ MOD_PROJECTS = (
     "marsbalancedhunger",
     "marsbaking",
     "marsbellows",
+    "marsdryingrack",
     "marsflinttool",
     "marshemp",
     "marsstoneage",
