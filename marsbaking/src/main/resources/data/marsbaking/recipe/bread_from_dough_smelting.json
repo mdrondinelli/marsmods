@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": "marsbaking:dough",
+  "result": { "id": "minecraft:bread" },
+  "experience": 0.35,
+  "cookingtime": 200
+}

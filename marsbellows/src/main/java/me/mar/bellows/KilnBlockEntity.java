@@ -1,25 +1,36 @@
 package me.mar.bellows;
 
+import com.mojang.serialization.Codec;
+import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.RecipeCraftingHolder;
 import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -28,10 +39,13 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class KilnBlockEntity extends BaseContainerBlockEntity
-        implements WorldlyContainer, StackedContentsCompatible {
+        implements WorldlyContainer, StackedContentsCompatible, RecipeCraftingHolder {
+    private static final Codec<Map<ResourceKey<Recipe<?>>, Integer>> RECIPES_USED_CODEC =
+            Codec.unboundedMap(Recipe.KEY_CODEC, Codec.INT);
     public static final int BASE_TEMPERATURE = 1100;
     public static final int MAX_BELLOWS_BOOST_TEMPERATURE = 1100;
     public static final int BELLOWS_BOOST_PER_USE = 300;
@@ -60,6 +74,7 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
     private int requiredTemperature;
     private int bellowsBoostTemperature;
     private int hotSoundTimer;
+    private final Reference2IntOpenHashMap<ResourceKey<Recipe<?>>> recipesUsed = new Reference2IntOpenHashMap<>();
     private final RecipeManager.CachedCheck<SingleRecipeInput, ? extends AbstractCookingRecipe> quickCheck =
             RecipeManager.createCheck(RecipeType.SMELTING);
 
@@ -144,6 +159,7 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
                         kiln.cookingTimer = 0;
                         kiln.cookingTotalTime = recipe.value().cookingTime();
                         burn(kiln.items, ingredient, result);
+                        kiln.setRecipeUsed(recipe);
                         changed = true;
                     }
                 }
@@ -250,6 +266,51 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
     }
 
     @Override
+    public void setRecipeUsed(@Nullable RecipeHolder<?> recipeUsed) {
+        if (recipeUsed != null) {
+            this.recipesUsed.addTo(recipeUsed.id(), 1);
+        }
+    }
+
+    @Override
+    public @Nullable RecipeHolder<?> getRecipeUsed() {
+        return null;
+    }
+
+    @Override
+    public void awardUsedRecipes(Player player, List<ItemStack> itemStacks) {
+    }
+
+    public void awardUsedRecipesAndPopExperience(ServerPlayer player) {
+        List<RecipeHolder<?>> recipesToAward = this.getRecipesToAwardAndPopExperience(player.level(), player.position());
+        player.awardRecipes(recipesToAward);
+        for (RecipeHolder<?> recipe : recipesToAward) {
+            player.triggerRecipeCrafted(recipe, this.items);
+        }
+        this.recipesUsed.clear();
+    }
+
+    public List<RecipeHolder<?>> getRecipesToAwardAndPopExperience(ServerLevel level, Vec3 position) {
+        List<RecipeHolder<?>> recipesToAward = new ArrayList<>();
+        for (var entry : this.recipesUsed.reference2IntEntrySet()) {
+            level.recipeAccess().byKey(entry.getKey()).ifPresent(recipe -> {
+                recipesToAward.add((RecipeHolder<?>) recipe);
+                createExperience(level, position, entry.getIntValue(), ((AbstractCookingRecipe) recipe.value()).experience());
+            });
+        }
+        return recipesToAward;
+    }
+
+    private static void createExperience(ServerLevel level, Vec3 position, int amount, float value) {
+        int xpReward = Mth.floor(amount * value);
+        float xpFraction = Mth.frac(amount * value);
+        if (xpFraction != 0.0F && level.getRandom().nextFloat() < xpFraction) {
+            xpReward++;
+        }
+        ExperienceOrb.award(level, position, xpReward);
+    }
+
+    @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
@@ -260,6 +321,8 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
         this.litTotalTime = input.getIntOr("lit_total_time", 0);
         this.requiredTemperature = input.getIntOr("required_temperature", 0);
         this.bellowsBoostTemperature = input.getIntOr("bellows_boost_temperature", 0);
+        this.recipesUsed.clear();
+        this.recipesUsed.putAll(input.read("RecipesUsed", RECIPES_USED_CODEC).orElse(Map.of()));
     }
 
     @Override
@@ -271,6 +334,7 @@ public class KilnBlockEntity extends BaseContainerBlockEntity
         output.putInt("lit_total_time", this.litTotalTime);
         output.putInt("required_temperature", this.requiredTemperature);
         output.putInt("bellows_boost_temperature", this.bellowsBoostTemperature);
+        output.store("RecipesUsed", RECIPES_USED_CODEC, this.recipesUsed);
         ContainerHelper.saveAllItems(output, this.items);
     }
 

@@ -18,6 +18,7 @@ import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -71,6 +72,20 @@ public class SpoilageEvents {
                 && event.getEntity() instanceof ItemEntity itemEntity
                 && itemEntity.level() instanceof ServerLevel level) {
             SpoilageService.touchStack(level, itemEntity.getItem());
+        }
+    }
+
+    @SubscribeEvent
+    public void touchCrafted(PlayerEvent.ItemCraftedEvent event) {
+        if (event.getEntity().level() instanceof ServerLevel level) {
+            SpoilageService.touchStack(level, event.getCrafting());
+        }
+    }
+
+    @SubscribeEvent
+    public void touchSmelted(PlayerEvent.ItemSmeltedEvent event) {
+        if (event.getEntity().level() instanceof ServerLevel level) {
+            SpoilageService.touchStack(level, event.getSmelting());
         }
     }
 

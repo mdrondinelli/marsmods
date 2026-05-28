@@ -57,7 +57,25 @@ public class SpoilageRulesLoader extends SimplePreparableReloadListener<Spoilage
                     spoilage.addAll(loadedRules.rules().spoilage());
                     spoiledEffects.addAll(loadedRules.rules().spoiledEffects());
                 });
+        spoilage.sort(Comparator.comparingInt(SpoilageRulesLoader::tagSpecificity).reversed());
+        spoiledEffects.sort(Comparator.comparingInt(SpoilageRulesLoader::effectsTagSpecificity).reversed());
         return new SpoilageRulesData(List.copyOf(spoilage), List.copyOf(spoiledEffects));
+    }
+
+    private static int tagSpecificity(SpoilageRule rule) {
+        return pathDepth(rule.tag().location().getPath());
+    }
+
+    private static int effectsTagSpecificity(SpoiledEffectsRule rule) {
+        return pathDepth(rule.tag().location().getPath());
+    }
+
+    private static int pathDepth(String path) {
+        int count = 1;
+        for (int i = 0; i < path.length(); i++) {
+            if (path.charAt(i) == '/') count++;
+        }
+        return count;
     }
 
     private static Map<String, Integer> packOrder(ResourceManager manager) {

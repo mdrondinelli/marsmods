@@ -1,0 +1,11 @@
+{
+  "spoilage": [
+    {
+      "tag": "c:foods/dough",
+      "profile": {
+        "shelf_life_ticks": 24000,
+        "stale_threshold_ticks": 6000
+      }
+    }
+  ]
+}

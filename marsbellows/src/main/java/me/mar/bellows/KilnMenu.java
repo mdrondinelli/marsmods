@@ -21,6 +21,9 @@ public class KilnMenu extends AbstractFurnaceMenu {
         super(ModMenuTypes.KILN.get(), RecipeType.SMELTING, RecipePropertySet.FURNACE_INPUT,
                 RecipeBookType.FURNACE, containerId, inventory, container, data);
         this.kilnData = data;
+        KilnResultSlot resultSlot = new KilnResultSlot(inventory.player, container, 2, 116, 35);
+        resultSlot.index = 2;
+        this.slots.set(2, resultSlot);
     }
 
     public int getCurrentTemperature() {

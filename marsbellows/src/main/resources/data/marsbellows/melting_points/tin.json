@@ -1,0 +1,6 @@
+{
+  "values": [
+    { "ingredient": "#c:ores/tin", "melting_point": 232 },
+    { "ingredient": "#c:raw_materials/tin", "melting_point": 232 }
+  ]
+}

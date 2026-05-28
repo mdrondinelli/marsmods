@@ -2,13 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "#minecraft:stone_crafting_materials",
-    "B": "minecraft:bricks"
+    "I": "minecraft:iron_ingot",
+    "C": "minecraft:cobblestone",
+    "K": "marsbellows:kiln"
   },
   "pattern": [
-    "###",
-    "# #",
-    "BBB"
+    "ICI",
+    "CKC",
+    "ICI"
   ],
   "result": {
     "id": "minecraft:furnace"
