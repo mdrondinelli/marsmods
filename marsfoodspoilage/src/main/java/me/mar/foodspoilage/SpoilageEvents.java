@@ -134,20 +134,28 @@ public class SpoilageEvents {
     public void addFreshnessTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
         FreshnessData data = stack.get(ModDataComponents.FRESHNESS.get());
-        if (data == null) {
-            return;
-        }
-
         long gameTime = event.getEntity() == null ? 0 : event.getEntity().level().getGameTime();
-        FreshnessData updated = data.updatedTo(gameTime);
-        SpoilageState state = updated.state();
 
-        Component name = event.getToolTip().get(0);
-        event.getToolTip().set(0, FreshnessDisplay.nameWithFreshness(stack, name, gameTime));
+        SpoilageState state;
+        long remainingFreshTicks;
+        if (data != null) {
+            FreshnessData updated = data.updatedTo(gameTime);
+            state = updated.state();
+            remainingFreshTicks = updated.remainingFreshTicks();
+            Component name = event.getToolTip().get(0);
+            event.getToolTip().set(0, FreshnessDisplay.nameWithFreshness(stack, name, gameTime));
+        } else {
+            SpoilageProfile profile = SpoilageService.profileFor(stack);
+            if (profile == null) {
+                return;
+            }
+            state = SpoilageState.FRESH;
+            remainingFreshTicks = profile.shelfLifeTicks();
+        }
 
         if (state != SpoilageState.SPOILED) {
             double ticksPerHour = 1000.0 / MarsSpoilageConfig.TIMESPEED.get();
-            long hours = Math.max(1, Math.round(updated.remainingFreshTicks() / ticksPerHour));
+            long hours = Math.max(1, Math.round(remainingFreshTicks / ticksPerHour));
             Component timeLine;
             if (hours < 24) {
                 timeLine = hours == 1
